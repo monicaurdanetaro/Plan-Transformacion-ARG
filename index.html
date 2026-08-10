@@ -168,7 +168,40 @@ footer{text-align:center;padding:26px 0 40px;font-size:11.5px;color:var(--text-s
 .init-accion{font-size:12px;color:var(--text-mid);font-weight:500;margin-bottom:8px;}
 .init-resultado{font-size:12px;color:var(--text);font-weight:600;background:#f7f9fc;border-radius:8px;padding:10px 12px;line-height:1.55;}
 .init-resultado b{color:var(--navy);}
-.init-pob{font-size:10.5px;color:var(--text-soft);font-weight:700;margin-top:8px;}
+.init-pob{font-size:10.5px;color:var(--text-soft);font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+
+.edit-btn{
+  font-size:10.5px;font-weight:800;color:var(--blue);background:var(--blue-lt,#eef1fd);border:1px solid #d7e2fb;
+  border-radius:100px;padding:4px 10px;cursor:pointer;white-space:nowrap;
+}
+.edit-btn:hover{background:#dfe8fc;}
+
+.init-item.editing{border-color:var(--blue);background:#fbfcff;}
+.f-label{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--text-soft);margin:10px 0 4px;}
+.f-label:first-of-type{margin-top:0;}
+.f-input, .f-textarea{
+  width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:'Nunito',sans-serif;
+  font-size:12.5px;font-weight:600;color:var(--text);background:#fff;
+}
+.f-textarea{resize:vertical;min-height:56px;line-height:1.5;}
+.f-input:focus, .f-textarea:focus{outline:2px solid var(--blue);outline-offset:1px;}
+.f-actions{display:flex;gap:8px;margin-top:12px;}
+.f-save{
+  background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:800;font-size:12.5px;
+  cursor:pointer;font-family:'Nunito',sans-serif;
+}
+.f-save:hover{background:var(--navy2);}
+.f-save:disabled{opacity:.6;cursor:default;}
+.f-cancel{
+  background:#fff;color:var(--text-mid);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-weight:800;
+  font-size:12.5px;cursor:pointer;font-family:'Nunito',sans-serif;
+}
+.f-cancel:hover{background:#f7f9fc;}
+.add-btn{
+  width:100%;border:1.5px dashed var(--line);border-radius:12px;background:#fbfcfe;color:var(--blue);
+  font-weight:800;font-size:12.5px;padding:12px;cursor:pointer;margin:6px 0 20px;font-family:'Nunito',sans-serif;
+}
+.add-btn:hover{background:var(--blue-lt,#eef1fd);border-color:var(--blue);}
 
 table.datatable{width:100%;border-collapse:collapse;font-size:12.5px;}
 table.datatable th{
@@ -205,6 +238,8 @@ table.datatable tr:last-child td{border-bottom:none;}
   <div class="kpi-row" id="heroKpis"></div>
 </div>
 
+<div id="liveBanner" style="display:none;color:#fff;font-size:12.5px;font-weight:700;padding:9px 6vw;align-items:center;justify-content:center;text-align:center;"></div>
+
 <div class="wrap">
 
   <div class="section-head">
@@ -238,10 +273,20 @@ table.datatable tr:last-child td{border-bottom:none;}
 </div>
 
 <script>
+/* ============================================================
+   CONFIGURACIÓN — pega aquí la URL de tu Apps Script Web App
+   ============================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbxfMVSXVeZvA7frw4bMynFe_m52jAhYF-G7YT4ixEfCDvHp3yYgTnUAC22Ep8uvW4h7/exec";
+
+/* Datos de referencia (se usan si el portal aún no está conectado
+   a la hoja compartida, o si falla la conexión) */
 const DATA = {"dimensiones": [{"nombre": "Rol del líder", "objetivo": "Garantizar a través de los líderes la integración hacia el modelo Farmatodo y su cultura, impulsando su rol como habilitador de la transformación cultural."}, {"nombre": "Procesos", "objetivo": "Homologar y fortalecer los procesos básicos transversales entre Farmatodo, Vasallo y La Santé."}, {"nombre": "Estructura organizacional y acompañamiento", "objetivo": "Construir una organización que soporte la estrategia de integración y crecimiento, con mecanismos de seguimiento."}, {"nombre": "Integración Cultural: Farmatodo en Argentina", "objetivo": "Facilitar la integración de la cultura Farmatodo en Argentina, con la participación del consultor Fabricio Kaplan."}, {"nombre": "Misión, visión, valores y competencias", "objetivo": "Fortalecer el sentido de pertenencia y orgullo, alineando comportamientos con la cultura organizacional."}, {"nombre": "Reforzamiento y Reconocimiento continuo", "objetivo": "Estrategia integral enfocada en el reconocimiento y reforzamiento de comportamientos alineados a la cultura."}], "areas": [{"id": "rrhh", "nombre": "RRHH y Liderazgo", "resumen": "Movimientos de talento, contrataciones, estructura organizacional y gobierno del cambio.", "responsables": "RRHH · RRHH ARG · Desarrollo · Country Manager", "color": "#0084d0", "iniciativas": [{"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Creación del equipo para la Gestión del Cambio", "accion": "Conformación del equipo de trabajo para la integración: formalizar responsables por eje y etapa del plan.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Sin evidencia registrada de conformación formal del equipo. Pendiente de formalizar responsables por eje."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Movimientos internos entre países", "accion": "Movilidad de líderes Farmatodo (VEN–COL) con alto desempeño y dominio de procesos hacia Argentina.", "poblacion": "Operaciones", "estado": "completado", "resultado": "Movimientos ejecutados: Operaciones VEN — 1 Gerente de Tienda (Axel López) y 2 APV Senior (Samuel Castillo, Wilson Trejo). Colombia — 1 Gerente de Área (Miguel González), 3 Gerentes de Tienda (Miguel Achuri, Carlos Carrión, Jeyker Sánchez) y 2 APV Senior (Jennyfer Vergara, Brayan Ortega)."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Identificación del talento", "accion": "Entrevistas por competencias para identificar líderes en Argentina (FTD + Vasallo + La Santé) que impulsen el cambio.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Entrevistas realizadas por Daniela A. En espera de resultados de la codificación de competencias."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Contrataciones externas", "accion": "Contrataciones externas locales bajo un proceso de entrevistas y assessment por competencias.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En curso de cara a la migración (proyecto Tango), las nuevas aperturas y la cobertura de posiciones de las farmacias La Santé que se mudan."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Liderazgo para el cambio", "accion": "Consolidación del equipo de liderazgo Farmatodo Argentina que acompañará el proceso de gestión del cambio.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En progreso la construcción de la estructura deseada y el levantamiento de las estructuras de Vasallo y La Santé."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Integración cultural en la operación", "accion": "Participación de los líderes de la operación en la Convención de Gerentes 2026.", "poblacion": "Líderes de operaciones", "estado": "pendiente", "resultado": "En etapa de definición del formato y alcance de la Convención de Gerentes."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Estructura organizacional", "iniciativa": "Definición de la estructura organizacional", "accion": "Evolución de la estructura de acuerdo a las necesidades del negocio.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Levantamiento de la estructura deseada junto con las estructuras de Vasallo y La Santé, en espera de validación. VP Finanzas, RRHH, Comercial y Cadena de Suministro levantadas; VP TI pendiente por levantar."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Seguimiento sistematizado", "iniciativa": "Comité de Apoyo Funcional a Argentina", "accion": "Espacio de integración estratégica y operativa: comités sistemáticos de apoyo desde el corporativo a Argentina.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Mecanismo activo de seguimiento y soporte funcional al país."}], "estructura": [{"depto": "Junta Directiva", "actual": 3, "vacante": 0, "otros": 0}, {"depto": "Recursos Humanos", "actual": 5, "vacante": 0, "otros": 2}, {"depto": "Finanzas", "actual": 12, "vacante": 0, "otros": 0}, {"depto": "IT", "actual": 5, "vacante": 1, "otros": 0}, {"depto": "Comercial", "actual": 4, "vacante": 7, "otros": 1}, {"depto": "Auditoría", "actual": 1, "vacante": 1, "otros": 1}, {"depto": "Expansión", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Operaciones", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Cadena de Suministro", "actual": 1, "vacante": 0, "otros": 3}]}, {"id": "capacitacion", "nombre": "Capacitación", "resumen": "Rutas de aprendizaje, inducción, escuelas de formación y talleres de competencias para toda la población de Argentina.", "responsables": "Capacitación · RRHH ARG", "color": "#00a19a", "iniciativas": [{"dimension": "Procesos", "aspecto": "Modelaje", "iniciativa": "La “Farmacia que queremos”", "accion": "Creación de dos tiendas modelo que sirvan como escuela y entrenamiento para el resto de la red.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Botánico: ejecutado (9 colaboradores entrenados). Iglesia: ejecutado (7 colaboradores entrenados). Mark: pendiente de planificar sesión (se priorizó la migración de sistemas)."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Inducción", "accion": "Plan de Inducción para todos los colaboradores (Inicio 2.0, película 100 años, Farmacia Escuela, Plan de Entrenamiento).", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Inicio 2.0 lanzado (nueva versión). Farmacia Escuela: pendiente sesión de formación para instructores. Plan de entrenamiento en proceso de actualización."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Formación por Cargo", "accion": "Plan de Formación por Cargo (escuela de servicio, excelencia, comercial, formaciones básicas y técnicas, Cultura de Servicio).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En definición de cursos por escuela (Excelencia: pilares, planogramas, inventarios; Servicio: conductas; Comercial: foco Dermo). Planificación sugerida para febrero."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller de competencias y entrega de manuales", "accion": "Taller de competencias con entrega de manuales a los colaboradores.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Fecha de taller y viaje en validación con Adriana del Carpio."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller Seleccionando a los Mejores", "accion": "Taller con entrevistas de preguntas focalizadas en competencias.", "poblacion": "Líderes / RRHH", "estado": "completado", "resultado": "Taller ejecutado: 16 colaboradores de RRHH formados."}], "cursos": [{"formacion": "Inducción — Inicio 2.0", "poblacion": "Oficina / Operaciones / Logística", "meta": 363, "formados": 13, "estado": "progreso", "nota": "Lanzamiento realizado; formación en curso por unidad."}, {"formacion": "Taller de Competencias + GDDD", "poblacion": "Oficina / Operaciones / Logística", "meta": 131, "formados": 94, "estado": "progreso", "nota": "Ejecutado al 100% en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Taller Seleccionando a los Mejores", "poblacion": "RRHH (Oficina)", "meta": 16, "formados": 16, "estado": "completado", "nota": "Ejecutado."}, {"formacion": "Escuela Comercial (Estrategia Comercial)", "poblacion": "Supervisores (Operaciones)", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Formación aún sin ejecutar."}, {"formacion": "Programa Cultura de Servicio (M1, M2, M3)", "poblacion": "Supervisores", "meta": 97, "formados": 60, "estado": "progreso", "nota": "Ejecutado en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Programa Cultura de Servicio (M4 — Actualización)", "poblacion": "Supervisores (Operaciones)", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "Planificado para octubre 2026 (6 meses después de M1–M3)."}, {"formacion": "Escuela de Operaciones para Supervisores", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En diseño y validación de fecha."}, {"formacion": "PIAF — Farmacéuticos", "poblacion": "Farmacéuticos", "meta": 40, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "PIAF — Base Farmacia", "poblacion": "Base farmacia", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "Taller de Procesos Básicos de Operaciones", "poblacion": "Base operaciones", "meta": 400, "formados": 0, "estado": "pendiente", "nota": "En proceso de diseño (servicio, inventario, planograma)."}, {"formacion": "Refuerzo de Competencias", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En proceso de aprobación de Argentina."}, {"formacion": "Taller de Retroalimentación Efectiva", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En validación de fecha; se dará junto al refuerzo de competencias."}]}, {"id": "cultura", "nombre": "Cultura, Clima y Comunicaciones", "resumen": "Diagnóstico cultural de las tres cadenas, gestión del cambio, mitigación de riesgos y campañas de comunicación interna.", "responsables": "Fabricio Kaplan (consultor) · Comunicaciones internas · RRHH ARG · Desarrollo", "color": "#4a106e", "iniciativas": [{"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Diagnóstico cultural de las 3 cadenas", "accion": "Entrevistas y focus groups a los distintos segmentos de la población de empleados en cada operación y posiciones clave.", "poblacion": "Muestra de FTD Argentina", "estado": "completado", "resultado": "Focus groups ejecutados — Oficina: Farmatodo (6), La Santé (9), Vassallo (11). Operaciones: Farmatodo (12), La Santé (8), Vassallo (6). Más 16 entrevistas individuales con colaboradores de todas las unidades de negocio."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Co-creación de la propuesta de valor", "accion": "Workshop de alineamiento con el equipo de Liderazgo de Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Workshop ejecutado con el equipo de liderazgo."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Ejecución del plan de integración — Estrategia de comunicación", "accion": "Diseño de un plan de comunicación que mejore la fluidez y transparencia hacia todos los grupos participantes de la integración.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Gestión del cambio", "accion": "Desarrollo de un plan de manejo del cambio para la transformación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Mitigación de riesgos", "accion": "Identificación de la resistencia cultural, pérdida de talento clave e implicaciones legales-laborales de la homologación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Comunicación", "iniciativa": "Posicionamiento de los pilares culturales", "accion": "Campaña comunicacional de misión/visión/valores, cultura de servicio, 5 pilares de la operación, modelo de competencias, código de conducta, PAP y OAD.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Prioridades y tiempos de la campaña en validación."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Clima", "iniciativa": "Desarrollo de encuestas de clima y planes de acción", "accion": "Encuestas de clima periódicas y espacios de retroalimentación estructurada.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Daniela Álvarez."}], "focusgroup": [{"segmento": "Oficina Farmatodo", "personas": 6}, {"segmento": "Oficina La Santé", "personas": 9}, {"segmento": "Oficina Vassallo", "personas": 11}, {"segmento": "Operaciones Farmatodo", "personas": 12}, {"segmento": "Operaciones La Santé", "personas": 8}, {"segmento": "Operaciones Vassallo", "personas": 6}, {"segmento": "Entrevistas individuales", "personas": 16}]}, {"id": "bienestar", "nombre": "Bienestar y Reconocimiento", "resumen": "Programas de reconocimiento asociados a la cultura de servicio y calendario de festividades homologado para Argentina.", "responsables": "Bienestar · RRHH ARG", "color": "#E50571", "iniciativas": [{"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Reconocimiento", "iniciativa": "Programas de reconocimiento", "accion": "Implementación de los programas de reconocimiento homologados (Soy el Mejor, años de servicio, Creciendo con Farmatodo, etc.).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Yolimar Martínez. Reconocimiento por años de servicio y Creciendo con Farmatodo previsto para la fiesta de fin de año."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Celebraciones", "iniciativa": "Festividades y aniversarios", "accion": "Implementación del calendario de festividades homologado y adaptado a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Ejecutadas: Día del padre (giftcard Big Box), Día del amigo (intercambio de tarjetas), Día del niño (concurso de dibujo), Fiesta de Fin de Año, reconocimiento por nacimiento de hijos (caja de regalo) y celebración de cumpleaños por WhatsApp/oficina."}]}, {"id": "compensacion", "nombre": "Compensación y Desempeño", "resumen": "Gestión de Desempeño y Desarrollo, y despliegue de la compensación variable en Argentina.", "responsables": "Compensación · RRHH ARG", "color": "#a1ac00", "iniciativas": [{"dimension": "Procesos", "aspecto": "Desarrollo", "iniciativa": "Gestión de Desempeño y Desarrollo (GDDD)", "accion": "Despliegue del proceso en todas sus fases, con feedback según metodología.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Operaciones: taller de GDDD dictado en agosto 2025. Oficina: 3 nuevos ingresos y 1 traslado de La Santé pendientes por completar el proceso."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Gestión de desempeño y desarrollo", "iniciativa": "Compensación variable", "accion": "Definición de indicadores, objetivos y metas para aplicar el proceso en todas sus fases.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En ejecución. Pago de compensación variable programado para el 15 de septiembre."}]}, {"id": "ti", "nombre": "TI, Finanzas y Procesos", "resumen": "Homologación de sistemas, procesos críticos transversales y cambio de uniformes.", "responsables": "TI y Finanzas · Comité de Apoyo Funcional a Argentina", "color": "#418FDE", "iniciativas": [{"dimension": "Procesos", "aspecto": "Procesos", "iniciativa": "Identificación de procesos críticos y prioridades", "accion": "Identificación de procesos críticos y priorización de quick wins para generar confianza y resultados visibles en el corto plazo.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Proceso permanente. Listado de PAP de Argentina disponible; pendiente validar qué procesos actualizar."}, {"dimension": "Procesos", "aspecto": "Uniformes", "iniciativa": "Cambio de uniformes", "accion": "Búsqueda de proveedores locales para el nuevo uniforme.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "4 proveedores contactados (Uniformes Saber, Casa Blanco, Juvenilia, Consultora DYG), en proceso de presupuesto y muestras."}, {"dimension": "Procesos", "aspecto": "Sistemas", "iniciativa": "Homologación de sistemas tecnológicos y administrativos", "accion": "Revisión y adaptación de los sistemas operativos y administrativos a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Responsable y acciones en validación con TI y Finanzas."}]}]};
 
 const STATE_LABEL = {completado:'Completado', progreso:'En progreso', pendiente:'Pendiente'};
-const STATE_COLOR = {completado:'var(--green)', progreso:'var(--amber)', pendiente:'var(--red)'};
+const STATE_OPTIONS = ['completado','progreso','pendiente'];
+
+let liveMode = false;
+let saving = false;
 
 function weightedPct(items){
   if(!items.length) return 0;
@@ -254,8 +299,97 @@ function counts(items){
   return c;
 }
 
-// ---- Hero KPIs ----
-(function(){
+/* ============================================================
+   API — lectura y escritura contra el Apps Script Web App
+   ============================================================ */
+function apiConfigured(){
+  return API_URL && API_URL.indexOf('PASTE_YOUR') === -1;
+}
+
+async function apiGet(){
+  const res = await fetch(API_URL, { method:'GET' });
+  const json = await res.json();
+  if(!json.ok) throw new Error(json.error || 'Error al leer datos');
+  return json.data;
+}
+
+async function apiPost(body){
+  const res = await fetch(API_URL, {
+    method:'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(body)
+  });
+  const json = await res.json();
+  if(!json.ok) throw new Error(json.error || 'Error al guardar');
+  return json;
+}
+
+function groupByArea(rows){
+  const map = {};
+  rows.forEach(r=>{
+    if(!map[r.area_id]) map[r.area_id] = [];
+    map[r.area_id].push({
+      id: r.id, dimension: r.dimension, aspecto: r.aspecto, iniciativa: r.iniciativa,
+      accion: r.accion, poblacion: r.poblacion, estado: r.estado, resultado: r.resultado
+    });
+  });
+  return map;
+}
+
+async function loadLiveData(){
+  if(!apiConfigured()){ renderAll(); return; }
+  try{
+    const rows = await apiGet();
+    const grouped = groupByArea(rows);
+    DATA.areas.forEach(a=>{ if(grouped[a.id]) a.iniciativas = grouped[a.id]; });
+    liveMode = true;
+  }catch(err){
+    console.error('No se pudo cargar datos en vivo:', err);
+    liveMode = false;
+  }
+  renderAll();
+}
+
+/* ============================================================
+   IDENTIFICACIÓN LIGERA — solo para atribuir ediciones
+   ============================================================ */
+function getUserName(){
+  let name = localStorage.getItem('ftd_user_name');
+  if(!name){
+    name = window.prompt('¿Cuál es tu nombre? (para identificar tus ediciones en el historial)') || 'Sin nombre';
+    localStorage.setItem('ftd_user_name', name);
+  }
+  return name;
+}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function renderAll(){
+  renderLiveBanner();
+  renderHeroKpis();
+  renderDimStrip();
+  renderOverallBox();
+  renderCardGrid();
+}
+
+function renderLiveBanner(){
+  const el = document.getElementById('liveBanner');
+  if(!el) return;
+  el.style.display = 'flex';
+  if(!apiConfigured()){
+    el.style.background = '#c9860a';
+    el.innerHTML = 'Portal en modo referencia: aún no está conectado a la hoja compartida, así que la edición está desactivada. Configura API_URL en el código para activarla.';
+  } else if(!liveMode){
+    el.style.background = '#c23b3b';
+    el.innerHTML = 'No se pudo conectar con la hoja compartida. Mostrando datos de referencia — revisa la URL de Apps Script o tu conexión.';
+  } else {
+    el.style.background = '#1f9254';
+    el.innerHTML = 'Conectado a la hoja compartida — los cambios que hagas quedan guardados para todas las áreas.';
+  }
+}
+
+function renderHeroKpis(){
   const allInit = DATA.areas.flatMap(a=>a.iniciativas);
   const overallPct = weightedPct(allInit);
   const c = counts(allInit);
@@ -268,15 +402,15 @@ function counts(items){
   document.getElementById('heroKpis').innerHTML = kpis.map(k=>`
     <div class="kpi ${k.accent?'accent':''}"><div class="kpi-val">${k.val}</div><div class="kpi-lbl">${k.lbl}</div></div>
   `).join('');
-})();
+}
 
-// ---- Dimension strip ----
-document.getElementById('dimStrip').innerHTML = DATA.dimensiones.map(d=>`
-  <div class="dim-chip"><b>${d.nombre}</b><span>${d.objetivo}</span></div>
-`).join('');
+function renderDimStrip(){
+  document.getElementById('dimStrip').innerHTML = DATA.dimensiones.map(d=>`
+    <div class="dim-chip"><b>${d.nombre}</b><span>${d.objetivo}</span></div>
+  `).join('');
+}
 
-// ---- Overall progress box ----
-(function(){
+function renderOverallBox(){
   const allInit = DATA.areas.flatMap(a=>a.iniciativas);
   const pct = weightedPct(allInit);
   const c = counts(allInit);
@@ -292,46 +426,185 @@ document.getElementById('dimStrip').innerHTML = DATA.dimensiones.map(d=>`
       </div>
     </div>
   `;
-})();
+}
 
-// ---- Area cards ----
-document.getElementById('cardGrid').innerHTML = DATA.areas.map(a=>{
-  const pct = weightedPct(a.iniciativas);
-  const c = counts(a.iniciativas);
-  return `
-  <div class="area-card" style="--c:${a.color}" onclick="openArea('${a.id}')">
-    <span class="arrow">↗</span>
-    <span class="tag">${a.responsables.split(' · ')[0]}</span>
-    <h3>${a.nombre}</h3>
-    <div class="desc">${a.resumen}</div>
-    <div class="foot">
-      <div class="area-pct">${pct}<span> % avance</span></div>
-      <div class="area-counts">
-        ${c.completado?`<span class="pill completado">${c.completado} ✓</span>`:''}
-        ${c.progreso?`<span class="pill progreso">${c.progreso} ⏳</span>`:''}
-        ${c.pendiente?`<span class="pill pendiente">${c.pendiente} •</span>`:''}
-      </div>
-    </div>
-  </div>`;
-}).join('');
-
-function initHtml(i){
-  return `
-    <div class="init-item">
-      <div class="init-top">
-        <div>
-          <div class="init-name">${i.iniciativa}</div>
-          <div class="init-dim">${i.dimension} · ${i.aspecto}</div>
+function renderCardGrid(){
+  document.getElementById('cardGrid').innerHTML = DATA.areas.map(a=>{
+    const pct = weightedPct(a.iniciativas);
+    const c = counts(a.iniciativas);
+    return `
+    <div class="area-card" style="--c:${a.color}" onclick="openArea('${a.id}')">
+      <span class="arrow">↗</span>
+      <span class="tag">${a.responsables.split(' · ')[0]}</span>
+      <h3>${a.nombre}</h3>
+      <div class="desc">${a.resumen}</div>
+      <div class="foot">
+        <div class="area-pct">${pct}<span> % avance</span></div>
+        <div class="area-counts">
+          ${c.completado?`<span class="pill completado">${c.completado} ✓</span>`:''}
+          ${c.progreso?`<span class="pill progreso">${c.progreso} ⏳</span>`:''}
+          ${c.pendiente?`<span class="pill pendiente">${c.pendiente} •</span>`:''}
         </div>
-        <span class="badge ${i.estado}">${STATE_LABEL[i.estado]}</span>
       </div>
-      <div class="init-accion">${i.accion}</div>
-      <div class="init-resultado"><b>Resultado: </b>${i.resultado}</div>
-      <div class="init-pob">Población: ${i.poblacion}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   INICIATIVAS — vista y edición
+   ============================================================ */
+function esc(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function initHtml(areaId, i, idx){
+  const canEdit = apiConfigured() && liveMode && i.id;
+  return `
+    <div class="init-item" id="init-${i.id || (areaId+'-new-'+idx)}">
+      <div class="init-view">
+        <div class="init-top">
+          <div>
+            <div class="init-name">${esc(i.iniciativa)}</div>
+            <div class="init-dim">${esc(i.dimension)} · ${esc(i.aspecto)}</div>
+          </div>
+          <span class="badge ${i.estado}">${STATE_LABEL[i.estado]}</span>
+        </div>
+        <div class="init-accion">${esc(i.accion)}</div>
+        <div class="init-resultado"><b>Resultado: </b>${esc(i.resultado)}</div>
+        <div class="init-pob">Población: ${esc(i.poblacion)}
+          ${canEdit ? `<button class="edit-btn" onclick="startEdit('${areaId}','${i.id}')">✎ Editar</button>` : ''}
+        </div>
+      </div>
     </div>
   `;
 }
 
+function editFormHtml(areaId, i){
+  const opts = STATE_OPTIONS.map(s=>`<option value="${s}" ${s===i.estado?'selected':''}>${STATE_LABEL[s]}</option>`).join('');
+  return `
+    <div class="init-item editing" id="init-${i.id}">
+      <label class="f-label">Iniciativa</label>
+      <input class="f-input" id="f-iniciativa-${i.id}" value="${esc(i.iniciativa)}">
+      <label class="f-label">Acción</label>
+      <textarea class="f-textarea" id="f-accion-${i.id}">${esc(i.accion)}</textarea>
+      <label class="f-label">Población</label>
+      <input class="f-input" id="f-poblacion-${i.id}" value="${esc(i.poblacion)}">
+      <label class="f-label">Estado</label>
+      <select class="f-input" id="f-estado-${i.id}">${opts}</select>
+      <label class="f-label">Resultado / avance real</label>
+      <textarea class="f-textarea" id="f-resultado-${i.id}" rows="4">${esc(i.resultado)}</textarea>
+      <div class="f-actions">
+        <button class="f-save" onclick="saveEdit('${areaId}','${i.id}')">Guardar cambios</button>
+        <button class="f-cancel" onclick="renderModal('${areaId}')">Cancelar</button>
+      </div>
+    </div>
+  `;
+}
+
+function startEdit(areaId, id){
+  const a = DATA.areas.find(x=>x.id===areaId);
+  const i = a.iniciativas.find(x=>x.id===id);
+  document.getElementById('init-'+id).outerHTML = editFormHtml(areaId, i);
+}
+
+async function saveEdit(areaId, id){
+  if(saving) return;
+  saving = true;
+  const btn = document.querySelector(`#init-${id} .f-save`);
+  if(btn){ btn.textContent = 'Guardando…'; btn.disabled = true; }
+
+  const fields = {
+    iniciativa: document.getElementById('f-iniciativa-'+id).value,
+    accion: document.getElementById('f-accion-'+id).value,
+    poblacion: document.getElementById('f-poblacion-'+id).value,
+    estado: document.getElementById('f-estado-'+id).value,
+    resultado: document.getElementById('f-resultado-'+id).value,
+  };
+
+  try{
+    await apiPost({ action:'update', id, fields, updated_by: getUserName() });
+    const a = DATA.areas.find(x=>x.id===areaId);
+    const i = a.iniciativas.find(x=>x.id===id);
+    Object.assign(i, fields);
+    renderModal(areaId);
+    renderHeroKpis(); renderOverallBox(); renderCardGrid();
+  }catch(err){
+    alert('No se pudo guardar: ' + err.message);
+    if(btn){ btn.textContent = 'Guardar cambios'; btn.disabled = false; }
+  }
+  saving = false;
+}
+
+function newIniciativaFormHtml(areaId){
+  const opts = STATE_OPTIONS.map(s=>`<option value="${s}">${STATE_LABEL[s]}</option>`).join('');
+  return `
+    <div class="init-item editing" id="init-new-${areaId}">
+      <label class="f-label">Dimensión</label>
+      <input class="f-input" id="nf-dimension-${areaId}" placeholder="Ej: Procesos">
+      <label class="f-label">Aspecto</label>
+      <input class="f-input" id="nf-aspecto-${areaId}" placeholder="Ej: Formación">
+      <label class="f-label">Iniciativa</label>
+      <input class="f-input" id="nf-iniciativa-${areaId}" placeholder="Nombre de la iniciativa">
+      <label class="f-label">Acción</label>
+      <textarea class="f-textarea" id="nf-accion-${areaId}"></textarea>
+      <label class="f-label">Población</label>
+      <input class="f-input" id="nf-poblacion-${areaId}" placeholder="Ej: Todo FTD Argentina">
+      <label class="f-label">Estado</label>
+      <select class="f-input" id="nf-estado-${areaId}">${opts}</select>
+      <label class="f-label">Resultado / avance real</label>
+      <textarea class="f-textarea" id="nf-resultado-${areaId}" rows="4"></textarea>
+      <div class="f-actions">
+        <button class="f-save" onclick="saveNewIniciativa('${areaId}')">Agregar iniciativa</button>
+        <button class="f-cancel" onclick="renderModal('${areaId}')">Cancelar</button>
+      </div>
+    </div>
+  `;
+}
+
+function showNewForm(areaId){
+  document.getElementById('newIniciativaSlot-'+areaId).innerHTML = newIniciativaFormHtml(areaId);
+}
+
+async function saveNewIniciativa(areaId){
+  if(saving) return;
+  saving = true;
+  const a = DATA.areas.find(x=>x.id===areaId);
+  const payload = {
+    action:'create',
+    area_id: areaId,
+    area_nombre: a.nombre,
+    dimension: document.getElementById('nf-dimension-'+areaId).value,
+    aspecto: document.getElementById('nf-aspecto-'+areaId).value,
+    iniciativa: document.getElementById('nf-iniciativa-'+areaId).value,
+    accion: document.getElementById('nf-accion-'+areaId).value,
+    poblacion: document.getElementById('nf-poblacion-'+areaId).value,
+    estado: document.getElementById('nf-estado-'+areaId).value,
+    resultado: document.getElementById('nf-resultado-'+areaId).value,
+    responsables: a.responsables,
+    updated_by: getUserName()
+  };
+  if(!payload.iniciativa.trim()){
+    alert('Escribe al menos el nombre de la iniciativa.');
+    saving = false;
+    return;
+  }
+  try{
+    const res = await apiPost(payload);
+    a.iniciativas.push({
+      id: res.id, dimension: payload.dimension, aspecto: payload.aspecto, iniciativa: payload.iniciativa,
+      accion: payload.accion, poblacion: payload.poblacion, estado: payload.estado, resultado: payload.resultado
+    });
+    renderModal(areaId);
+    renderHeroKpis(); renderOverallBox(); renderCardGrid();
+  }catch(err){
+    alert('No se pudo agregar la iniciativa: ' + err.message);
+  }
+  saving = false;
+}
+
+/* ============================================================
+   TABLAS DE REFERENCIA (no editables en esta versión)
+   ============================================================ */
 function cursosTable(cursos){
   const metaTot = cursos.reduce((s,c)=> s + (c.meta||0), 0);
   const formTot = cursos.reduce((s,c)=> s + (c.formados||0), 0);
@@ -339,12 +612,12 @@ function cursosTable(cursos){
     const pct = c.meta ? Math.round(c.formados/c.meta*100) : (c.formados>0?100:0);
     const color = c.estado==='completado' ? 'var(--green)' : c.estado==='progreso' ? 'var(--amber)' : 'var(--red)';
     return `<tr>
-      <td><b>${c.formacion}</b></td>
-      <td>${c.poblacion}</td>
+      <td><b>${esc(c.formacion)}</b></td>
+      <td>${esc(c.poblacion)}</td>
       <td>${c.meta ? c.meta.toLocaleString('es') : 'N/D'}</td>
       <td>${c.formados.toLocaleString('es')}</td>
       <td><div class="prog-cell"><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-size:11px;font-weight:800;color:${color}">${c.meta?pct+'%':'—'}</span></div></td>
-      <td class="nota-cell">${c.nota}</td>
+      <td class="nota-cell">${esc(c.nota)}</td>
     </tr>`;
   }).join('');
   return `
@@ -362,7 +635,7 @@ function estructuraTable(depts){
   const totalOtros = depts.reduce((s,d)=>s+d.otros,0);
   const rows = depts.map(d=>{
     const total = d.actual+d.vacante+d.otros;
-    return `<tr><td><b>${d.depto}</b></td><td>${d.actual}</td><td>${d.vacante}</td><td>${d.otros}</td><td><b>${total}</b></td></tr>`;
+    return `<tr><td><b>${esc(d.depto)}</b></td><td>${d.actual}</td><td>${d.vacante}</td><td>${d.otros}</td><td><b>${total}</b></td></tr>`;
   }).join('');
   return `
     <table class="datatable">
@@ -378,37 +651,33 @@ function focusGroupBlock(fg){
   const total = fg.reduce((s,f)=>s+f.personas,0);
   const rows = fg.map(f=>`
     <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;">
-      <span style="font-weight:700;color:var(--text-mid)">${f.segmento}</span>
+      <span style="font-weight:700;color:var(--text-mid)">${esc(f.segmento)}</span>
       <span style="font-weight:800;color:var(--navy)">${f.personas}</span>
     </div>
   `).join('');
   return `<div>${rows}</div><div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--navy)">Total de participantes: ${total}</div>`;
 }
 
-function openArea(id){
+/* ============================================================
+   MODAL DE ÁREA
+   ============================================================ */
+function renderModal(id){
   const a = DATA.areas.find(x=>x.id===id);
   const pct = weightedPct(a.iniciativas);
   const c = counts(a.iniciativas);
+  const canEdit = apiConfigured() && liveMode;
 
   let extra = '';
-  if(a.cursos){
-    const metaTot = a.cursos.reduce((s,x)=>s+(x.meta||0),0);
-    const formTot = a.cursos.reduce((s,x)=>s+x.formados,0);
-    extra += `<h4>Resultados de formación (cifras)</h4>${cursosTable(a.cursos)}`;
-  }
-  if(a.estructura){
-    extra += `<h4>Estructura organizacional deseada — headcount</h4>${estructuraTable(a.estructura)}`;
-  }
-  if(a.focusgroup){
-    extra += `<h4>Diagnóstico cultural — participación en focus groups y entrevistas</h4>${focusGroupBlock(a.focusgroup)}`;
-  }
+  if(a.cursos) extra += `<h4>Resultados de formación (cifras de referencia)</h4>${cursosTable(a.cursos)}`;
+  if(a.estructura) extra += `<h4>Estructura organizacional deseada — headcount (referencia)</h4>${estructuraTable(a.estructura)}`;
+  if(a.focusgroup) extra += `<h4>Diagnóstico cultural — participación en focus groups y entrevistas (referencia)</h4>${focusGroupBlock(a.focusgroup)}`;
 
   document.getElementById('modal').innerHTML = `
     <div class="modal-head">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <div class="modal-tag">Resultados por área · Farmatodo Argentina</div>
-      <h2>${a.nombre}</h2>
-      <div class="resp">Responsables: ${a.responsables}</div>
+      <div class="modal-tag">Resultados por área</div>
+      <h2>${esc(a.nombre)}</h2>
+      <div class="resp">Responsables: ${esc(a.responsables)}</div>
       <div class="modal-kpis">
         <div><div class="mk-val">${pct}%</div><div class="mk-lbl">Avance ponderado</div></div>
         <div><div class="mk-val">${a.iniciativas.length}</div><div class="mk-lbl">Iniciativas</div></div>
@@ -419,10 +688,18 @@ function openArea(id){
     </div>
     <div class="modal-body">
       <h4>Iniciativas del roadmap</h4>
-      ${a.iniciativas.map(initHtml).join('')}
+      ${a.iniciativas.map((i,idx)=>initHtml(a.id, i, idx)).join('')}
+      ${canEdit ? `
+        <div id="newIniciativaSlot-${a.id}"></div>
+        <button class="add-btn" onclick="showNewForm('${a.id}')">+ Agregar iniciativa</button>
+      ` : ''}
       ${extra}
     </div>
   `;
+}
+
+function openArea(id){
+  renderModal(id);
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -434,6 +711,11 @@ document.getElementById('overlay').addEventListener('click', e=>{
   if(e.target.id==='overlay') closeModal();
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ============================================================
+   ARRANQUE
+   ============================================================ */
+loadLiveData();
 </script>
 </body>
 </html>
