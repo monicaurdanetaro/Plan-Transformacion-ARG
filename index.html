@@ -507,7 +507,6 @@ function initCardHtml(i){
       </div>
       <div class="init-accion">${esc(i.accion)}</div>
       <div class="init-resultado"><b>Resultado:</b> ${formatResultado(i.resultado)}</div>
-      ${i.cursosRelacionados ? miniCursosTable(i.area_id, i.cursosRelacionados) : ''}
       <div class="init-pob">Población: ${esc(i.poblacion)}
         ${canEdit ? `<button class="edit-btn" onclick="startEdit('${i.area_id}','${i.id}')">✎ Editar</button>` : ''}
       </div>
