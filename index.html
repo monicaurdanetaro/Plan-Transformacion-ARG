@@ -555,10 +555,13 @@ function initCardHtml(i){
 
 function editFormHtml(areaId, i){
   const opts = STATE_OPTIONS.map(s=>`<option value="${s}" ${s===i.estado?'selected':''}>${STATE_LABEL[s]}</option>`).join('');
+  const areaOpts = DATA.areas.map(a=>`<option value="${a.id}" ${a.id===areaId?'selected':''}>${esc(a.nombre)}</option>`).join('');
   return `
     <div class="init-item editing" id="init-${i.id}">
       <label class="f-label">Iniciativa</label>
       <input class="f-input" id="f-iniciativa-${i.id}" value="${esc(i.iniciativa)}">
+      <label class="f-label">Área responsable</label>
+      <select class="f-select" id="f-area-${i.id}">${areaOpts}</select>
       <label class="f-label">Acción</label>
       <textarea class="f-textarea" id="f-accion-${i.id}">${esc(i.accion)}</textarea>
       <label class="f-label">Indicador de éxito</label>
@@ -588,8 +591,12 @@ async function saveEdit(areaId, id){
   saving = true;
   const btn = document.querySelector(`#init-${id} .f-save`);
   if(btn){ btn.textContent = 'Guardando…'; btn.disabled = true; }
+  const newAreaId = document.getElementById('f-area-'+id).value;
+  const newArea = areaById(newAreaId);
   const fields = {
     iniciativa: document.getElementById('f-iniciativa-'+id).value,
+    area_id: newAreaId,
+    area_nombre: newArea.nombre,
     accion: document.getElementById('f-accion-'+id).value,
     indicador: document.getElementById('f-indicador-'+id).value,
     poblacion: document.getElementById('f-poblacion-'+id).value,
@@ -599,7 +606,14 @@ async function saveEdit(areaId, id){
   try{
     await apiPost({ type:'iniciativas', action:'update', id, fields });
     const a = areaById(areaId);
-    Object.assign(a.iniciativas.find(x=>x.id===id), fields);
+    const idx = a.iniciativas.findIndex(x=>x.id===id);
+    const item = a.iniciativas[idx];
+    Object.assign(item, fields);
+    if(newAreaId !== areaId){
+      a.iniciativas.splice(idx, 1);
+      delete item.area_tag; // la etiqueta manual ya no aplica si cambió de área
+      newArea.iniciativas.push(item);
+    }
     renderMain();
     renderHeroKpis(); renderTabsBar();
   }catch(err){
