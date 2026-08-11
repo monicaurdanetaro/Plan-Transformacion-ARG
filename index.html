@@ -33,7 +33,7 @@ img{max-width:100%;}
   content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
   background:linear-gradient(90deg,var(--blue),var(--teal),var(--purple),var(--magenta),var(--olive));
 }
-.hero-inner{max-width:1220px;margin:0 auto;position:relative;z-index:2;padding:0 6vw;box-sizing:border-box;}
+.hero-inner{max-width:1560px;margin:0 auto;position:relative;z-index:2;padding:0 6vw;box-sizing:border-box;}
 .hero-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .hero-brand{display:flex;align-items:center;gap:14px;}
 .hero-brand img{height:30px;width:auto;display:block;}
@@ -59,7 +59,7 @@ img{max-width:100%;}
 
 /* ===== LAYOUT: sidebar + content ===== */
 .layout{
-  display:flex; align-items:stretch; gap:0; max-width:1220px; margin:0 auto; padding:0 6vw 70px;
+  display:flex; align-items:stretch; gap:0; max-width:1560px; margin:0 auto; padding:0 6vw 70px;
   box-sizing:border-box;
 }
 .sidebar{width:230px;flex:none;border-right:1px solid var(--line);padding:24px 20px 24px 0;margin-right:30px;}
@@ -352,7 +352,7 @@ function renderTabsBar(){
     const dim = DATA.dimensiones.find(d=>d.nombre===t.id);
     const n = dim ? iniciativasByDimension(dim.nombre).length : allIniciativas().length;
     const color = dim ? (DIM_COLORS[dim.nombre]||'var(--blue)') : 'var(--navy)';
-    return `<button class="tab-btn ${currentTab===t.id?'active':''}" style="--dim-color:${color}" onclick="switchTab(${JSON.stringify(t.id)})">${esc(t.label)}<span class="n">${n}</span></button>`;
+    return `<button class="tab-btn ${currentTab===t.id?'active':''}" style="--dim-color:${color}" onclick="switchTab(${esc(JSON.stringify(t.id))})">${esc(t.label)}<span class="n">${n}</span></button>`;
   }).join('');
 }
 function switchTab(id){
@@ -392,7 +392,7 @@ function renderResumen(){
     const color = DIM_COLORS[d.nombre] || 'var(--blue)';
     const areasInvolved = [...new Set(items.map(i=>i.area_nombre))];
     return `
-      <div class="dim-card" style="--dc:${color}" onclick="switchTab(${JSON.stringify(d.nombre)})">
+      <div class="dim-card" style="--dc:${color}" onclick="switchTab(${esc(JSON.stringify(d.nombre))})">
         <h3>${esc(d.nombre)}</h3>
         <div class="obj">${esc(d.objetivo)}</div>
         <div class="foot">
@@ -527,7 +527,7 @@ function newIniciativaFormHtml(dimName){
       <label class="f-label">Resultado / avance real</label>
       <textarea class="f-textarea" id="nf-resultado" rows="4"></textarea>
       <div class="f-actions">
-        <button class="f-save" onclick="saveNewIniciativa(${JSON.stringify(dimName)})">Agregar iniciativa</button>
+        <button class="f-save" onclick="saveNewIniciativa(${esc(JSON.stringify(dimName))})">Agregar iniciativa</button>
         <button class="f-cancel" onclick="renderMain()">Cancelar</button>
       </div>
     </div>
@@ -772,7 +772,7 @@ function renderDimensionTab(dimName){
     </div>
     ${filterChips}
     <div id="iniciativasList">${filteredItems.map(initCardHtml).join('') || '<p style="color:var(--text-soft);font-size:13px;">No hay iniciativas de esta dimensión en el área seleccionada.</p>'}</div>
-    ${canEdit ? `<div id="newIniciativaSlot"></div><button class="add-btn" onclick="showNewForm(${JSON.stringify(dimName)})">+ Agregar iniciativa a esta dimensión</button>` : ''}
+    ${canEdit ? `<div id="newIniciativaSlot"></div><button class="add-btn" onclick="showNewForm(${esc(JSON.stringify(dimName))})">+ Agregar iniciativa a esta dimensión</button>` : ''}
     ${extra}
   `;
 }
