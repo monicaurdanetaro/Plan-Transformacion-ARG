@@ -202,6 +202,8 @@ footer{text-align:center;padding:26px 0 40px;font-size:11.5px;color:var(--text-s
   font-weight:800;font-size:12.5px;padding:12px;cursor:pointer;margin:6px 0 20px;font-family:'Nunito',sans-serif;
 }
 .add-btn:hover{background:var(--blue-lt,#eef1fd);border-color:var(--blue);}
+table.datatable .edit-btn{padding:4px 8px;font-size:12px;}
+table.datatable .f-input{padding:6px 8px;font-size:11.5px;}
 
 table.datatable{width:100%;border-collapse:collapse;font-size:12.5px;}
 table.datatable th{
@@ -237,8 +239,6 @@ table.datatable tr:last-child td{border-bottom:none;}
   </div>
   <div class="kpi-row" id="heroKpis"></div>
 </div>
-
-<div id="liveBanner" style="display:none;color:#fff;font-size:12.5px;font-weight:700;padding:9px 6vw;align-items:center;justify-content:center;text-align:center;"></div>
 
 <div class="wrap">
 
@@ -280,7 +280,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxfMVSXVeZvA7frw4bMynFe
 
 /* Datos de referencia (se usan si el portal aún no está conectado
    a la hoja compartida, o si falla la conexión) */
-const DATA = {"dimensiones": [{"nombre": "Rol del líder", "objetivo": "Garantizar a través de los líderes la integración hacia el modelo Farmatodo y su cultura, impulsando su rol como habilitador de la transformación cultural."}, {"nombre": "Procesos", "objetivo": "Homologar y fortalecer los procesos básicos transversales entre Farmatodo, Vasallo y La Santé."}, {"nombre": "Estructura organizacional y acompañamiento", "objetivo": "Construir una organización que soporte la estrategia de integración y crecimiento, con mecanismos de seguimiento."}, {"nombre": "Integración Cultural: Farmatodo en Argentina", "objetivo": "Facilitar la integración de la cultura Farmatodo en Argentina, con la participación del consultor Fabricio Kaplan."}, {"nombre": "Misión, visión, valores y competencias", "objetivo": "Fortalecer el sentido de pertenencia y orgullo, alineando comportamientos con la cultura organizacional."}, {"nombre": "Reforzamiento y Reconocimiento continuo", "objetivo": "Estrategia integral enfocada en el reconocimiento y reforzamiento de comportamientos alineados a la cultura."}], "areas": [{"id": "rrhh", "nombre": "RRHH y Liderazgo", "resumen": "Movimientos de talento, contrataciones, estructura organizacional y gobierno del cambio.", "responsables": "RRHH · RRHH ARG · Desarrollo · Country Manager", "color": "#0084d0", "iniciativas": [{"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Creación del equipo para la Gestión del Cambio", "accion": "Conformación del equipo de trabajo para la integración: formalizar responsables por eje y etapa del plan.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Sin evidencia registrada de conformación formal del equipo. Pendiente de formalizar responsables por eje."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Movimientos internos entre países", "accion": "Movilidad de líderes Farmatodo (VEN–COL) con alto desempeño y dominio de procesos hacia Argentina.", "poblacion": "Operaciones", "estado": "completado", "resultado": "Movimientos ejecutados: Operaciones VEN — 1 Gerente de Tienda (Axel López) y 2 APV Senior (Samuel Castillo, Wilson Trejo). Colombia — 1 Gerente de Área (Miguel González), 3 Gerentes de Tienda (Miguel Achuri, Carlos Carrión, Jeyker Sánchez) y 2 APV Senior (Jennyfer Vergara, Brayan Ortega)."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Identificación del talento", "accion": "Entrevistas por competencias para identificar líderes en Argentina (FTD + Vasallo + La Santé) que impulsen el cambio.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Entrevistas realizadas por Daniela A. En espera de resultados de la codificación de competencias."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Contrataciones externas", "accion": "Contrataciones externas locales bajo un proceso de entrevistas y assessment por competencias.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En curso de cara a la migración (proyecto Tango), las nuevas aperturas y la cobertura de posiciones de las farmacias La Santé que se mudan."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Liderazgo para el cambio", "accion": "Consolidación del equipo de liderazgo Farmatodo Argentina que acompañará el proceso de gestión del cambio.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En progreso la construcción de la estructura deseada y el levantamiento de las estructuras de Vasallo y La Santé."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Integración cultural en la operación", "accion": "Participación de los líderes de la operación en la Convención de Gerentes 2026.", "poblacion": "Líderes de operaciones", "estado": "pendiente", "resultado": "En etapa de definición del formato y alcance de la Convención de Gerentes."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Estructura organizacional", "iniciativa": "Definición de la estructura organizacional", "accion": "Evolución de la estructura de acuerdo a las necesidades del negocio.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Levantamiento de la estructura deseada junto con las estructuras de Vasallo y La Santé, en espera de validación. VP Finanzas, RRHH, Comercial y Cadena de Suministro levantadas; VP TI pendiente por levantar."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Seguimiento sistematizado", "iniciativa": "Comité de Apoyo Funcional a Argentina", "accion": "Espacio de integración estratégica y operativa: comités sistemáticos de apoyo desde el corporativo a Argentina.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Mecanismo activo de seguimiento y soporte funcional al país."}], "estructura": [{"depto": "Junta Directiva", "actual": 3, "vacante": 0, "otros": 0}, {"depto": "Recursos Humanos", "actual": 5, "vacante": 0, "otros": 2}, {"depto": "Finanzas", "actual": 12, "vacante": 0, "otros": 0}, {"depto": "IT", "actual": 5, "vacante": 1, "otros": 0}, {"depto": "Comercial", "actual": 4, "vacante": 7, "otros": 1}, {"depto": "Auditoría", "actual": 1, "vacante": 1, "otros": 1}, {"depto": "Expansión", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Operaciones", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Cadena de Suministro", "actual": 1, "vacante": 0, "otros": 3}]}, {"id": "capacitacion", "nombre": "Capacitación", "resumen": "Rutas de aprendizaje, inducción, escuelas de formación y talleres de competencias para toda la población de Argentina.", "responsables": "Capacitación · RRHH ARG", "color": "#00a19a", "iniciativas": [{"dimension": "Procesos", "aspecto": "Modelaje", "iniciativa": "La “Farmacia que queremos”", "accion": "Creación de dos tiendas modelo que sirvan como escuela y entrenamiento para el resto de la red.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Botánico: ejecutado (9 colaboradores entrenados). Iglesia: ejecutado (7 colaboradores entrenados). Mark: pendiente de planificar sesión (se priorizó la migración de sistemas)."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Inducción", "accion": "Plan de Inducción para todos los colaboradores (Inicio 2.0, película 100 años, Farmacia Escuela, Plan de Entrenamiento).", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Inicio 2.0 lanzado (nueva versión). Farmacia Escuela: pendiente sesión de formación para instructores. Plan de entrenamiento en proceso de actualización."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Formación por Cargo", "accion": "Plan de Formación por Cargo (escuela de servicio, excelencia, comercial, formaciones básicas y técnicas, Cultura de Servicio).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En definición de cursos por escuela (Excelencia: pilares, planogramas, inventarios; Servicio: conductas; Comercial: foco Dermo). Planificación sugerida para febrero."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller de competencias y entrega de manuales", "accion": "Taller de competencias con entrega de manuales a los colaboradores.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Fecha de taller y viaje en validación con Adriana del Carpio."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller Seleccionando a los Mejores", "accion": "Taller con entrevistas de preguntas focalizadas en competencias.", "poblacion": "Líderes / RRHH", "estado": "completado", "resultado": "Taller ejecutado: 16 colaboradores de RRHH formados."}], "cursos": [{"formacion": "Inducción — Inicio 2.0", "poblacion": "Oficina / Operaciones / Logística", "meta": 363, "formados": 13, "estado": "progreso", "nota": "Lanzamiento realizado; formación en curso por unidad."}, {"formacion": "Taller de Competencias + GDDD", "poblacion": "Oficina / Operaciones / Logística", "meta": 131, "formados": 94, "estado": "progreso", "nota": "Ejecutado al 100% en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Taller Seleccionando a los Mejores", "poblacion": "RRHH (Oficina)", "meta": 16, "formados": 16, "estado": "completado", "nota": "Ejecutado."}, {"formacion": "Escuela Comercial (Estrategia Comercial)", "poblacion": "Supervisores (Operaciones)", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Formación aún sin ejecutar."}, {"formacion": "Programa Cultura de Servicio (M1, M2, M3)", "poblacion": "Supervisores", "meta": 97, "formados": 60, "estado": "progreso", "nota": "Ejecutado en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Programa Cultura de Servicio (M4 — Actualización)", "poblacion": "Supervisores (Operaciones)", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "Planificado para octubre 2026 (6 meses después de M1–M3)."}, {"formacion": "Escuela de Operaciones para Supervisores", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En diseño y validación de fecha."}, {"formacion": "PIAF — Farmacéuticos", "poblacion": "Farmacéuticos", "meta": 40, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "PIAF — Base Farmacia", "poblacion": "Base farmacia", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "Taller de Procesos Básicos de Operaciones", "poblacion": "Base operaciones", "meta": 400, "formados": 0, "estado": "pendiente", "nota": "En proceso de diseño (servicio, inventario, planograma)."}, {"formacion": "Refuerzo de Competencias", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En proceso de aprobación de Argentina."}, {"formacion": "Taller de Retroalimentación Efectiva", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En validación de fecha; se dará junto al refuerzo de competencias."}]}, {"id": "cultura", "nombre": "Cultura, Clima y Comunicaciones", "resumen": "Diagnóstico cultural de las tres cadenas, gestión del cambio, mitigación de riesgos y campañas de comunicación interna.", "responsables": "Fabricio Kaplan (consultor) · Comunicaciones internas · RRHH ARG · Desarrollo", "color": "#4a106e", "iniciativas": [{"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Diagnóstico cultural de las 3 cadenas", "accion": "Entrevistas y focus groups a los distintos segmentos de la población de empleados en cada operación y posiciones clave.", "poblacion": "Muestra de FTD Argentina", "estado": "completado", "resultado": "Focus groups ejecutados — Oficina: Farmatodo (6), La Santé (9), Vassallo (11). Operaciones: Farmatodo (12), La Santé (8), Vassallo (6). Más 16 entrevistas individuales con colaboradores de todas las unidades de negocio."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Co-creación de la propuesta de valor", "accion": "Workshop de alineamiento con el equipo de Liderazgo de Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Workshop ejecutado con el equipo de liderazgo."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Ejecución del plan de integración — Estrategia de comunicación", "accion": "Diseño de un plan de comunicación que mejore la fluidez y transparencia hacia todos los grupos participantes de la integración.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Gestión del cambio", "accion": "Desarrollo de un plan de manejo del cambio para la transformación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Mitigación de riesgos", "accion": "Identificación de la resistencia cultural, pérdida de talento clave e implicaciones legales-laborales de la homologación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Comunicación", "iniciativa": "Posicionamiento de los pilares culturales", "accion": "Campaña comunicacional de misión/visión/valores, cultura de servicio, 5 pilares de la operación, modelo de competencias, código de conducta, PAP y OAD.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Prioridades y tiempos de la campaña en validación."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Clima", "iniciativa": "Desarrollo de encuestas de clima y planes de acción", "accion": "Encuestas de clima periódicas y espacios de retroalimentación estructurada.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Daniela Álvarez."}], "focusgroup": [{"segmento": "Oficina Farmatodo", "personas": 6}, {"segmento": "Oficina La Santé", "personas": 9}, {"segmento": "Oficina Vassallo", "personas": 11}, {"segmento": "Operaciones Farmatodo", "personas": 12}, {"segmento": "Operaciones La Santé", "personas": 8}, {"segmento": "Operaciones Vassallo", "personas": 6}, {"segmento": "Entrevistas individuales", "personas": 16}]}, {"id": "bienestar", "nombre": "Bienestar y Reconocimiento", "resumen": "Programas de reconocimiento asociados a la cultura de servicio y calendario de festividades homologado para Argentina.", "responsables": "Bienestar · RRHH ARG", "color": "#E50571", "iniciativas": [{"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Reconocimiento", "iniciativa": "Programas de reconocimiento", "accion": "Implementación de los programas de reconocimiento homologados (Soy el Mejor, años de servicio, Creciendo con Farmatodo, etc.).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Yolimar Martínez. Reconocimiento por años de servicio y Creciendo con Farmatodo previsto para la fiesta de fin de año."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Celebraciones", "iniciativa": "Festividades y aniversarios", "accion": "Implementación del calendario de festividades homologado y adaptado a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Ejecutadas: Día del padre (giftcard Big Box), Día del amigo (intercambio de tarjetas), Día del niño (concurso de dibujo), Fiesta de Fin de Año, reconocimiento por nacimiento de hijos (caja de regalo) y celebración de cumpleaños por WhatsApp/oficina."}]}, {"id": "compensacion", "nombre": "Compensación y Desempeño", "resumen": "Gestión de Desempeño y Desarrollo, y despliegue de la compensación variable en Argentina.", "responsables": "Compensación · RRHH ARG", "color": "#a1ac00", "iniciativas": [{"dimension": "Procesos", "aspecto": "Desarrollo", "iniciativa": "Gestión de Desempeño y Desarrollo (GDDD)", "accion": "Despliegue del proceso en todas sus fases, con feedback según metodología.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Operaciones: taller de GDDD dictado en agosto 2025. Oficina: 3 nuevos ingresos y 1 traslado de La Santé pendientes por completar el proceso."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Gestión de desempeño y desarrollo", "iniciativa": "Compensación variable", "accion": "Definición de indicadores, objetivos y metas para aplicar el proceso en todas sus fases.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En ejecución. Pago de compensación variable programado para el 15 de septiembre."}]}, {"id": "ti", "nombre": "TI, Finanzas y Procesos", "resumen": "Homologación de sistemas, procesos críticos transversales y cambio de uniformes.", "responsables": "TI y Finanzas · Comité de Apoyo Funcional a Argentina", "color": "#418FDE", "iniciativas": [{"dimension": "Procesos", "aspecto": "Procesos", "iniciativa": "Identificación de procesos críticos y prioridades", "accion": "Identificación de procesos críticos y priorización de quick wins para generar confianza y resultados visibles en el corto plazo.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Proceso permanente. Listado de PAP de Argentina disponible; pendiente validar qué procesos actualizar."}, {"dimension": "Procesos", "aspecto": "Uniformes", "iniciativa": "Cambio de uniformes", "accion": "Búsqueda de proveedores locales para el nuevo uniforme.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "4 proveedores contactados (Uniformes Saber, Casa Blanco, Juvenilia, Consultora DYG), en proceso de presupuesto y muestras."}, {"dimension": "Procesos", "aspecto": "Sistemas", "iniciativa": "Homologación de sistemas tecnológicos y administrativos", "accion": "Revisión y adaptación de los sistemas operativos y administrativos a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Responsable y acciones en validación con TI y Finanzas."}]}]};
+const DATA = {"dimensiones": [{"nombre": "Rol del líder", "objetivo": "Garantizar a través de los líderes la integración hacia el modelo Farmatodo y su cultura, impulsando su rol como habilitador de la transformación cultural."}, {"nombre": "Procesos", "objetivo": "Homologar y fortalecer los procesos básicos transversales entre Farmatodo, Vasallo y La Santé."}, {"nombre": "Estructura organizacional y acompañamiento", "objetivo": "Construir una organización que soporte la estrategia de integración y crecimiento, con mecanismos de seguimiento."}, {"nombre": "Integración Cultural: Farmatodo en Argentina", "objetivo": "Facilitar la integración de la cultura Farmatodo en Argentina, con la participación del consultor Fabricio Kaplan."}, {"nombre": "Misión, visión, valores y competencias", "objetivo": "Fortalecer el sentido de pertenencia y orgullo, alineando comportamientos con la cultura organizacional."}, {"nombre": "Reforzamiento y Reconocimiento continuo", "objetivo": "Estrategia integral enfocada en el reconocimiento y reforzamiento de comportamientos alineados a la cultura."}], "areas": [{"id": "rrhh", "nombre": "RRHH y Liderazgo", "resumen": "Movimientos de talento, contrataciones, estructura organizacional y gobierno del cambio.", "responsables": "RRHH · RRHH ARG · Desarrollo · Country Manager", "color": "#0084d0", "iniciativas": [{"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Creación del equipo para la Gestión del Cambio", "accion": "Conformación del equipo de trabajo para la integración: formalizar responsables por eje y etapa del plan.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Sin evidencia registrada de conformación formal del equipo. Pendiente de formalizar responsables por eje."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Movimientos internos entre países", "accion": "Movilidad de líderes Farmatodo (VEN–COL) con alto desempeño y dominio de procesos hacia Argentina.", "poblacion": "Operaciones", "estado": "completado", "resultado": "Movimientos ejecutados: Operaciones VEN — 1 Gerente de Tienda (Axel López) y 2 APV Senior (Samuel Castillo, Wilson Trejo). Colombia — 1 Gerente de Área (Miguel González), 3 Gerentes de Tienda (Miguel Achuri, Carlos Carrión, Jeyker Sánchez) y 2 APV Senior (Jennyfer Vergara, Brayan Ortega)."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Identificación del talento", "accion": "Entrevistas por competencias para identificar líderes en Argentina (FTD + Vasallo + La Santé) que impulsen el cambio.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Entrevistas realizadas por Daniela A. En espera de resultados de la codificación de competencias."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Contrataciones externas", "accion": "Contrataciones externas locales bajo un proceso de entrevistas y assessment por competencias.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En curso de cara a la migración (proyecto Tango), las nuevas aperturas y la cobertura de posiciones de las farmacias La Santé que se mudan."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Liderazgo para el cambio", "accion": "Consolidación del equipo de liderazgo Farmatodo Argentina que acompañará el proceso de gestión del cambio.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En progreso la construcción de la estructura deseada y el levantamiento de las estructuras de Vasallo y La Santé."}, {"dimension": "Rol del líder", "aspecto": "Desarrollo", "iniciativa": "Integración cultural en la operación", "accion": "Participación de los líderes de la operación en la Convención de Gerentes 2026.", "poblacion": "Líderes de operaciones", "estado": "pendiente", "resultado": "En etapa de definición del formato y alcance de la Convención de Gerentes."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Estructura organizacional", "iniciativa": "Definición de la estructura organizacional", "accion": "Evolución de la estructura de acuerdo a las necesidades del negocio.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Levantamiento de la estructura deseada junto con las estructuras de Vasallo y La Santé, en espera de validación. VP Finanzas, RRHH, Comercial y Cadena de Suministro levantadas; VP TI pendiente por levantar."}, {"dimension": "Estructura organizacional y acompañamiento", "aspecto": "Seguimiento sistematizado", "iniciativa": "Comité de Apoyo Funcional a Argentina", "accion": "Espacio de integración estratégica y operativa: comités sistemáticos de apoyo desde el corporativo a Argentina.", "poblacion": "Corporativo", "estado": "progreso", "resultado": "Mecanismo activo de seguimiento y soporte funcional al país."}], "estructura": [{"depto": "Junta Directiva", "actual": 3, "vacante": 0, "otros": 0}, {"depto": "Recursos Humanos", "actual": 5, "vacante": 0, "otros": 2}, {"depto": "Finanzas", "actual": 12, "vacante": 0, "otros": 0}, {"depto": "IT", "actual": 5, "vacante": 1, "otros": 0}, {"depto": "Comercial", "actual": 4, "vacante": 7, "otros": 1}, {"depto": "Auditoría", "actual": 1, "vacante": 1, "otros": 1}, {"depto": "Expansión", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Operaciones", "actual": 0, "vacante": 0, "otros": 4}, {"depto": "Cadena de Suministro", "actual": 1, "vacante": 0, "otros": 3}], "vacantesLiderazgo": [{"cargo": "Director Comercial País", "estado": "Vacante", "cobertura": "Cubierto por una Gerente (Stephanie Barraud / Luciana Fenochietto según línea)"}, {"cargo": "Director de Operaciones", "estado": "Vacante", "cobertura": "Cubierto por Gerentes de Área (3)"}, {"cargo": "Gerente de Auditoría", "estado": "Vacante", "cobertura": "En búsqueda activa"}, {"cargo": "Gerente de IT", "estado": "Vacante", "cobertura": "Cubierto por un Coordinador (Johnny Marín), en desarrollo para la posición"}, {"cargo": "Gerente de Cadena de Suministro", "estado": "Vacante", "cobertura": "Colaborador con encargaduría (Jesús Delgado)"}, {"cargo": "Gerente de Reabastecimiento", "estado": "Vacante", "cobertura": "Colaborador con encargaduría (Javier Herrera)"}], "vacantesLiderazgoFecha": "Según organigrama de posiciones actualizado"}, {"id": "capacitacion", "nombre": "Capacitación", "resumen": "Rutas de aprendizaje, inducción, escuelas de formación y talleres de competencias para toda la población de Argentina.", "responsables": "Capacitación · RRHH ARG", "color": "#00a19a", "iniciativas": [{"dimension": "Procesos", "aspecto": "Modelaje", "iniciativa": "La “Farmacia que queremos”", "accion": "Creación de dos tiendas modelo que sirvan como escuela y entrenamiento para el resto de la red.", "poblacion": "Operaciones", "estado": "progreso", "resultado": "Botánico: ejecutado (9 colaboradores entrenados). Iglesia: ejecutado (7 colaboradores entrenados). Mark: pendiente de planificar sesión (se priorizó la migración de sistemas)."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Inducción", "accion": "Plan de Inducción para todos los colaboradores (Inicio 2.0, película 100 años, Farmacia Escuela, Plan de Entrenamiento).", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Inicio 2.0 lanzado (nueva versión). Farmacia Escuela: pendiente sesión de formación para instructores. Plan de entrenamiento en proceso de actualización."}, {"dimension": "Procesos", "aspecto": "Formación", "iniciativa": "Ruta de aprendizaje — Plan de Formación por Cargo", "accion": "Plan de Formación por Cargo (escuela de servicio, excelencia, comercial, formaciones básicas y técnicas, Cultura de Servicio).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En definición de cursos por escuela (Excelencia: pilares, planogramas, inventarios; Servicio: conductas; Comercial: foco Dermo). Planificación sugerida para febrero."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller de competencias y entrega de manuales", "accion": "Taller de competencias con entrega de manuales a los colaboradores.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Fecha de taller y viaje en validación con Adriana del Carpio."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Competencias", "iniciativa": "Taller Seleccionando a los Mejores", "accion": "Taller con entrevistas de preguntas focalizadas en competencias.", "poblacion": "Líderes / RRHH", "estado": "completado", "resultado": "Taller ejecutado: 16 colaboradores de RRHH formados."}], "cursos": [{"formacion": "Inducción — Inicio 2.0", "poblacion": "Oficina / Operaciones / Logística", "meta": 363, "formados": 13, "estado": "progreso", "nota": "Lanzamiento realizado; formación en curso por unidad."}, {"formacion": "Taller de Competencias + GDDD", "poblacion": "Oficina / Operaciones / Logística", "meta": 131, "formados": 94, "estado": "progreso", "nota": "Ejecutado al 100% en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Taller Seleccionando a los Mejores", "poblacion": "RRHH (Oficina)", "meta": 16, "formados": 16, "estado": "completado", "nota": "Ejecutado."}, {"formacion": "Escuela Comercial (Estrategia Comercial)", "poblacion": "Supervisores (Operaciones)", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Formación aún sin ejecutar."}, {"formacion": "Programa Cultura de Servicio (M1, M2, M3)", "poblacion": "Supervisores", "meta": 97, "formados": 60, "estado": "progreso", "nota": "Ejecutado en Operaciones; pendiente en Oficina y Logística."}, {"formacion": "Programa Cultura de Servicio (M4 — Actualización)", "poblacion": "Supervisores (Operaciones)", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "Planificado para octubre 2026 (6 meses después de M1–M3)."}, {"formacion": "Escuela de Operaciones para Supervisores", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En diseño y validación de fecha."}, {"formacion": "PIAF — Farmacéuticos", "poblacion": "Farmacéuticos", "meta": 40, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "PIAF — Base Farmacia", "poblacion": "Base farmacia", "meta": null, "formados": 0, "estado": "pendiente", "nota": "Diseño listo; en proceso de validación y aprobación de Argentina."}, {"formacion": "Taller de Procesos Básicos de Operaciones", "poblacion": "Base operaciones", "meta": 400, "formados": 0, "estado": "pendiente", "nota": "En proceso de diseño (servicio, inventario, planograma)."}, {"formacion": "Refuerzo de Competencias", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En proceso de aprobación de Argentina."}, {"formacion": "Taller de Retroalimentación Efectiva", "poblacion": "Supervisores", "meta": 60, "formados": 0, "estado": "pendiente", "nota": "En validación de fecha; se dará junto al refuerzo de competencias."}]}, {"id": "cultura", "nombre": "Cultura, Clima y Comunicaciones", "resumen": "Diagnóstico cultural de las tres cadenas, gestión del cambio, mitigación de riesgos y campañas de comunicación interna.", "responsables": "Fabricio Kaplan (consultor) · Comunicaciones internas · RRHH ARG · Desarrollo", "color": "#4a106e", "iniciativas": [{"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Diagnóstico cultural de las 3 cadenas", "accion": "Entrevistas y focus groups a los distintos segmentos de la población de empleados en cada operación y posiciones clave.", "poblacion": "Muestra de FTD Argentina", "estado": "completado", "resultado": "Focus groups ejecutados — Oficina: Farmatodo (6), La Santé (9), Vassallo (11). Operaciones: Farmatodo (12), La Santé (8), Vassallo (6). Más 16 entrevistas individuales con colaboradores de todas las unidades de negocio."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Co-creación de la propuesta de valor", "accion": "Workshop de alineamiento con el equipo de Liderazgo de Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Workshop ejecutado con el equipo de liderazgo."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Ejecución del plan de integración — Estrategia de comunicación", "accion": "Diseño de un plan de comunicación que mejore la fluidez y transparencia hacia todos los grupos participantes de la integración.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Gestión del cambio", "accion": "Desarrollo de un plan de manejo del cambio para la transformación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Integración Cultural: Farmatodo en Argentina", "aspecto": "Cultura y clima", "iniciativa": "Mitigación de riesgos", "accion": "Identificación de la resistencia cultural, pérdida de talento clave e implicaciones legales-laborales de la homologación.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Por ejecutar."}, {"dimension": "Misión, visión, valores y competencias", "aspecto": "Comunicación", "iniciativa": "Posicionamiento de los pilares culturales", "accion": "Campaña comunicacional de misión/visión/valores, cultura de servicio, 5 pilares de la operación, modelo de competencias, código de conducta, PAP y OAD.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Prioridades y tiempos de la campaña en validación."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Clima", "iniciativa": "Desarrollo de encuestas de clima y planes de acción", "accion": "Encuestas de clima periódicas y espacios de retroalimentación estructurada.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Daniela Álvarez."}], "focusgroup": [{"segmento": "Oficina Farmatodo", "personas": 6}, {"segmento": "Oficina La Santé", "personas": 9}, {"segmento": "Oficina Vassallo", "personas": 11}, {"segmento": "Operaciones Farmatodo", "personas": 12}, {"segmento": "Operaciones La Santé", "personas": 8}, {"segmento": "Operaciones Vassallo", "personas": 6}, {"segmento": "Entrevistas individuales", "personas": 16}]}, {"id": "bienestar", "nombre": "Bienestar y Reconocimiento", "resumen": "Programas de reconocimiento asociados a la cultura de servicio y calendario de festividades homologado para Argentina.", "responsables": "Bienestar · RRHH ARG", "color": "#E50571", "iniciativas": [{"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Reconocimiento", "iniciativa": "Programas de reconocimiento", "accion": "Implementación de los programas de reconocimiento homologados (Soy el Mejor, años de servicio, Creciendo con Farmatodo, etc.).", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "En validación con Yolimar Martínez. Reconocimiento por años de servicio y Creciendo con Farmatodo previsto para la fiesta de fin de año."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Celebraciones", "iniciativa": "Festividades y aniversarios", "accion": "Implementación del calendario de festividades homologado y adaptado a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "completado", "resultado": "Ejecutadas: Día del padre (giftcard Big Box), Día del amigo (intercambio de tarjetas), Día del niño (concurso de dibujo), Fiesta de Fin de Año, reconocimiento por nacimiento de hijos (caja de regalo) y celebración de cumpleaños por WhatsApp/oficina."}]}, {"id": "compensacion", "nombre": "Compensación y Desempeño", "resumen": "Gestión de Desempeño y Desarrollo, y despliegue de la compensación variable en Argentina.", "responsables": "Compensación · RRHH ARG", "color": "#a1ac00", "iniciativas": [{"dimension": "Procesos", "aspecto": "Desarrollo", "iniciativa": "Gestión de Desempeño y Desarrollo (GDDD)", "accion": "Despliegue del proceso en todas sus fases, con feedback según metodología.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Operaciones: taller de GDDD dictado en agosto 2025. Oficina: 3 nuevos ingresos y 1 traslado de La Santé pendientes por completar el proceso."}, {"dimension": "Reforzamiento y Reconocimiento continuo", "aspecto": "Gestión de desempeño y desarrollo", "iniciativa": "Compensación variable", "accion": "Definición de indicadores, objetivos y metas para aplicar el proceso en todas sus fases.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "En ejecución. Pago de compensación variable programado para el 15 de septiembre."}, {"dimension": "Procesos", "aspecto": "Cargos y Compensación", "iniciativa": "Homologación de Estructura de Cargos y Política Salarial", "accion": "Unificar los cargos, la política salarial y la compensación variable (con énfasis en comisiones de dermocosméticos y belleza) entre Farmatodo, Vassallo, La Santé y Walker, y dimensionar el impacto en el gasto de personal.", "poblacion": "Todo FTD Argentina (Farmatodo, Vassallo, La Santé, Walker)", "estado": "progreso", "resultado": "Plan aprobado por el Country Manager de Argentina (octubre 2025). Evaluación completada: revisión de cumplimiento de convenios laborales vigentes, análisis comparativo de estructuras de cargos y de políticas salariales de las 4 cadenas. Hallazgo relevante: inconsistencias en el cálculo de antigüedad en Vassallo, La Santé y Walker (usan criterios distintos a los establecidos por ley). Próximo paso: formular la propuesta formal e implementar el plan de acción (comunicacional por sesiones informativas en tienda y administración, contractual vía cesión/novación, y de capacitación en gestión de desempeño y compensación variable)."}]}, {"id": "ti", "nombre": "TI, Finanzas y Procesos", "resumen": "Homologación de sistemas, procesos críticos transversales y cambio de uniformes.", "responsables": "TI y Finanzas · Comité de Apoyo Funcional a Argentina", "color": "#418FDE", "iniciativas": [{"dimension": "Procesos", "aspecto": "Procesos", "iniciativa": "Identificación de procesos críticos y prioridades", "accion": "Identificación de procesos críticos y priorización de quick wins para generar confianza y resultados visibles en el corto plazo.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "Proceso permanente. Listado de PAP de Argentina disponible; pendiente validar qué procesos actualizar."}, {"dimension": "Procesos", "aspecto": "Uniformes", "iniciativa": "Cambio de uniformes", "accion": "Búsqueda de proveedores locales para el nuevo uniforme.", "poblacion": "Todo FTD Argentina", "estado": "progreso", "resultado": "4 proveedores contactados (Uniformes Saber, Casa Blanco, Juvenilia, Consultora DYG), en proceso de presupuesto y muestras."}, {"dimension": "Procesos", "aspecto": "Sistemas", "iniciativa": "Homologación de sistemas tecnológicos y administrativos", "accion": "Revisión y adaptación de los sistemas operativos y administrativos a Argentina.", "poblacion": "Todo FTD Argentina", "estado": "pendiente", "resultado": "Responsable y acciones en validación con TI y Finanzas."}]}]};
 
 const STATE_LABEL = {completado:'Completado', progreso:'En progreso', pendiente:'Pendiente'};
 const STATE_OPTIONS = ['completado','progreso','pendiente'];
@@ -310,7 +310,7 @@ async function apiGet(){
   const res = await fetch(API_URL, { method:'GET' });
   const json = await res.json();
   if(!json.ok) throw new Error(json.error || 'Error al leer datos');
-  return json.data;
+  return json; // { ok, iniciativas:[...], cursos:[...] }
 }
 
 async function apiPost(body){
@@ -336,12 +336,29 @@ function groupByArea(rows){
   return map;
 }
 
+function groupCursosByArea(rows){
+  const map = {};
+  rows.forEach(r=>{
+    if(!map[r.area_id]) map[r.area_id] = [];
+    map[r.area_id].push({
+      id: r.id, formacion: r.formacion, poblacion: r.poblacion,
+      meta: (r.meta===''||r.meta===undefined||r.meta===null) ? null : Number(r.meta),
+      formados: Number(r.formados)||0, estado: r.estado, nota: r.nota
+    });
+  });
+  return map;
+}
+
 async function loadLiveData(){
   if(!apiConfigured()){ renderAll(); return; }
   try{
-    const rows = await apiGet();
-    const grouped = groupByArea(rows);
-    DATA.areas.forEach(a=>{ if(grouped[a.id]) a.iniciativas = grouped[a.id]; });
+    const resp = await apiGet();
+    const grouped = groupByArea(resp.iniciativas || []);
+    const groupedCursos = groupCursosByArea(resp.cursos || []);
+    DATA.areas.forEach(a=>{
+      if(grouped[a.id]) a.iniciativas = grouped[a.id];
+      if(groupedCursos[a.id]) a.cursos = groupedCursos[a.id];
+    });
     liveMode = true;
   }catch(err){
     console.error('No se pudo cargar datos en vivo:', err);
@@ -351,42 +368,13 @@ async function loadLiveData(){
 }
 
 /* ============================================================
-   IDENTIFICACIÓN LIGERA — solo para atribuir ediciones
-   ============================================================ */
-function getUserName(){
-  let name = localStorage.getItem('ftd_user_name');
-  if(!name){
-    name = window.prompt('¿Cuál es tu nombre? (para identificar tus ediciones en el historial)') || 'Sin nombre';
-    localStorage.setItem('ftd_user_name', name);
-  }
-  return name;
-}
-
-/* ============================================================
    RENDER
    ============================================================ */
 function renderAll(){
-  renderLiveBanner();
   renderHeroKpis();
   renderDimStrip();
   renderOverallBox();
   renderCardGrid();
-}
-
-function renderLiveBanner(){
-  const el = document.getElementById('liveBanner');
-  if(!el) return;
-  el.style.display = 'flex';
-  if(!apiConfigured()){
-    el.style.background = '#c9860a';
-    el.innerHTML = 'Portal en modo referencia: aún no está conectado a la hoja compartida, así que la edición está desactivada. Configura API_URL en el código para activarla.';
-  } else if(!liveMode){
-    el.style.background = '#c23b3b';
-    el.innerHTML = 'No se pudo conectar con la hoja compartida. Mostrando datos de referencia — revisa la URL de Apps Script o tu conexión.';
-  } else {
-    el.style.background = '#1f9254';
-    el.innerHTML = 'Conectado a la hoja compartida — los cambios que hagas quedan guardados para todas las áreas.';
-  }
 }
 
 function renderHeroKpis(){
@@ -522,7 +510,7 @@ async function saveEdit(areaId, id){
   };
 
   try{
-    await apiPost({ action:'update', id, fields, updated_by: getUserName() });
+    await apiPost({ type:'iniciativas', action:'update', id, fields });
     const a = DATA.areas.find(x=>x.id===areaId);
     const i = a.iniciativas.find(x=>x.id===id);
     Object.assign(i, fields);
@@ -570,6 +558,7 @@ async function saveNewIniciativa(areaId){
   saving = true;
   const a = DATA.areas.find(x=>x.id===areaId);
   const payload = {
+    type:'iniciativas',
     action:'create',
     area_id: areaId,
     area_nombre: a.nombre,
@@ -581,7 +570,6 @@ async function saveNewIniciativa(areaId){
     estado: document.getElementById('nf-estado-'+areaId).value,
     resultado: document.getElementById('nf-resultado-'+areaId).value,
     responsables: a.responsables,
-    updated_by: getUserName()
   };
   if(!payload.iniciativa.trim()){
     alert('Escribe al menos el nombre de la iniciativa.');
@@ -605,28 +593,139 @@ async function saveNewIniciativa(areaId){
 /* ============================================================
    TABLAS DE REFERENCIA (no editables en esta versión)
    ============================================================ */
-function cursosTable(cursos){
+function cursosTable(areaId, cursos){
+  const canEdit = apiConfigured() && liveMode;
   const metaTot = cursos.reduce((s,c)=> s + (c.meta||0), 0);
   const formTot = cursos.reduce((s,c)=> s + (c.formados||0), 0);
   const rows = cursos.map(c=>{
     const pct = c.meta ? Math.round(c.formados/c.meta*100) : (c.formados>0?100:0);
     const color = c.estado==='completado' ? 'var(--green)' : c.estado==='progreso' ? 'var(--amber)' : 'var(--red)';
-    return `<tr>
+    return `<tr id="curso-row-${c.id}">
       <td><b>${esc(c.formacion)}</b></td>
       <td>${esc(c.poblacion)}</td>
       <td>${c.meta ? c.meta.toLocaleString('es') : 'N/D'}</td>
       <td>${c.formados.toLocaleString('es')}</td>
       <td><div class="prog-cell"><div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-size:11px;font-weight:800;color:${color}">${c.meta?pct+'%':'—'}</span></div></td>
       <td class="nota-cell">${esc(c.nota)}</td>
+      ${canEdit ? `<td><button class="edit-btn" onclick="startEditCurso('${areaId}','${c.id}')">✎</button></td>` : ''}
     </tr>`;
   }).join('');
   return `
-    <table class="datatable">
-      <thead><tr><th>Formación</th><th>Población</th><th>Meta</th><th>Formados</th><th>Avance</th><th>Estado</th></tr></thead>
+    <table class="datatable" id="cursos-table-${areaId}">
+      <thead><tr><th>Formación</th><th>Población</th><th>Meta</th><th>Formados</th><th>Avance</th><th>Estado</th>${canEdit?'<th></th>':''}</tr></thead>
       <tbody>${rows}</tbody>
-      <tfoot><tr style="background:#f7f9fc"><td><b>Total</b></td><td></td><td><b>${metaTot.toLocaleString('es')}</b></td><td><b>${formTot.toLocaleString('es')}</b></td><td><b>${Math.round(formTot/metaTot*100)}%</b></td><td></td></tr></tfoot>
+      <tfoot><tr style="background:#f7f9fc"><td><b>Total</b></td><td></td><td><b>${metaTot.toLocaleString('es')}</b></td><td><b>${formTot.toLocaleString('es')}</b></td><td><b>${Math.round(formTot/metaTot*100)}%</b></td><td></td>${canEdit?'<td></td>':''}</tr></tfoot>
     </table>
+    ${canEdit ? `<div id="newCursoSlot-${areaId}"></div><button class="add-btn" onclick="showNewCursoForm('${areaId}')">+ Agregar formación</button>` : ''}
   `;
+}
+
+function cursoEditRowHtml(areaId, c){
+  const opts = STATE_OPTIONS.map(s=>`<option value="${s}" ${s===c.estado?'selected':''}>${STATE_LABEL[s]}</option>`).join('');
+  return `<tr id="curso-row-${c.id}">
+    <td><input class="f-input" id="cf-formacion-${c.id}" value="${esc(c.formacion)}"></td>
+    <td><input class="f-input" id="cf-poblacion-${c.id}" value="${esc(c.poblacion)}"></td>
+    <td><input class="f-input" id="cf-meta-${c.id}" value="${c.meta==null?'':c.meta}" style="width:70px" placeholder="N/D"></td>
+    <td><input class="f-input" id="cf-formados-${c.id}" value="${c.formados}" style="width:70px"></td>
+    <td><select class="f-input" id="cf-estado-${c.id}">${opts}</select></td>
+    <td><input class="f-input" id="cf-nota-${c.id}" value="${esc(c.nota)}"></td>
+    <td style="white-space:nowrap;">
+      <button class="f-save" style="padding:6px 10px;font-size:11px;" onclick="saveEditCurso('${areaId}','${c.id}')">Guardar</button>
+      <button class="f-cancel" style="padding:6px 10px;font-size:11px;" onclick="renderModal('${areaId}')">Cancelar</button>
+    </td>
+  </tr>`;
+}
+
+function startEditCurso(areaId, id){
+  const a = DATA.areas.find(x=>x.id===areaId);
+  const c = a.cursos.find(x=>x.id===id);
+  document.getElementById('curso-row-'+id).outerHTML = cursoEditRowHtml(areaId, c);
+}
+
+async function saveEditCurso(areaId, id){
+  if(saving) return;
+  saving = true;
+  const metaRaw = document.getElementById('cf-meta-'+id).value.trim();
+  const fields = {
+    formacion: document.getElementById('cf-formacion-'+id).value,
+    poblacion: document.getElementById('cf-poblacion-'+id).value,
+    meta: metaRaw === '' ? '' : Number(metaRaw),
+    formados: Number(document.getElementById('cf-formados-'+id).value) || 0,
+    estado: document.getElementById('cf-estado-'+id).value,
+    nota: document.getElementById('cf-nota-'+id).value,
+  };
+  try{
+    await apiPost({ type:'cursos', action:'update', id, fields });
+    const a = DATA.areas.find(x=>x.id===areaId);
+    const c = a.cursos.find(x=>x.id===id);
+    Object.assign(c, fields, { meta: fields.meta === '' ? null : fields.meta });
+    renderModal(areaId);
+    renderHeroKpis(); renderOverallBox(); renderCardGrid();
+  }catch(err){
+    alert('No se pudo guardar: ' + err.message);
+  }
+  saving = false;
+}
+
+function newCursoFormHtml(areaId){
+  const opts = STATE_OPTIONS.map(s=>`<option value="${s}">${STATE_LABEL[s]}</option>`).join('');
+  return `
+    <div class="init-item editing" id="init-new-curso-${areaId}">
+      <label class="f-label">Formación</label>
+      <input class="f-input" id="ncf-formacion-${areaId}" placeholder="Nombre de la formación">
+      <label class="f-label">Población</label>
+      <input class="f-input" id="ncf-poblacion-${areaId}" placeholder="Ej: Supervisores">
+      <label class="f-label">Meta (dejar vacío si no aplica)</label>
+      <input class="f-input" id="ncf-meta-${areaId}" placeholder="Ej: 60">
+      <label class="f-label">Formados</label>
+      <input class="f-input" id="ncf-formados-${areaId}" placeholder="Ej: 0">
+      <label class="f-label">Estado</label>
+      <select class="f-input" id="ncf-estado-${areaId}">${opts}</select>
+      <label class="f-label">Nota</label>
+      <textarea class="f-textarea" id="ncf-nota-${areaId}"></textarea>
+      <div class="f-actions">
+        <button class="f-save" onclick="saveNewCurso('${areaId}')">Agregar formación</button>
+        <button class="f-cancel" onclick="renderModal('${areaId}')">Cancelar</button>
+      </div>
+    </div>
+  `;
+}
+
+function showNewCursoForm(areaId){
+  document.getElementById('newCursoSlot-'+areaId).innerHTML = newCursoFormHtml(areaId);
+}
+
+async function saveNewCurso(areaId){
+  if(saving) return;
+  saving = true;
+  const a = DATA.areas.find(x=>x.id===areaId);
+  const metaRaw = document.getElementById('ncf-meta-'+areaId).value.trim();
+  const formacion = document.getElementById('ncf-formacion-'+areaId).value.trim();
+  if(!formacion){
+    alert('Escribe al menos el nombre de la formación.');
+    saving = false;
+    return;
+  }
+  const payload = {
+    type:'cursos', action:'create', area_id: areaId,
+    formacion, poblacion: document.getElementById('ncf-poblacion-'+areaId).value,
+    meta: metaRaw, formados: document.getElementById('ncf-formados-'+areaId).value || 0,
+    estado: document.getElementById('ncf-estado-'+areaId).value,
+    nota: document.getElementById('ncf-nota-'+areaId).value,
+  };
+  try{
+    const res = await apiPost(payload);
+    a.cursos.push({
+      id: res.id, formacion, poblacion: payload.poblacion,
+      meta: metaRaw === '' ? null : Number(metaRaw), formados: Number(payload.formados)||0,
+      estado: payload.estado, nota: payload.nota
+    });
+    renderModal(areaId);
+    renderHeroKpis(); renderOverallBox(); renderCardGrid();
+  }catch(err){
+    alert('No se pudo agregar la formación: ' + err.message);
+  }
+  saving = false;
 }
 
 function estructuraTable(depts){
@@ -658,6 +757,22 @@ function focusGroupBlock(fg){
   return `<div>${rows}</div><div style="margin-top:10px;font-size:12px;font-weight:800;color:var(--navy)">Total de participantes: ${total}</div>`;
 }
 
+function vacantesLiderazgoBlock(list){
+  const rows = list.map(v=>`
+    <tr>
+      <td><b>${esc(v.cargo)}</b></td>
+      <td><span class="badge pendiente">${esc(v.estado)}</span></td>
+      <td class="nota-cell">${esc(v.cobertura)}</td>
+    </tr>
+  `).join('');
+  return `
+    <table class="datatable">
+      <thead><tr><th>Cargo</th><th>Estado</th><th>Cobertura actual</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
 /* ============================================================
    MODAL DE ÁREA
    ============================================================ */
@@ -668,9 +783,10 @@ function renderModal(id){
   const canEdit = apiConfigured() && liveMode;
 
   let extra = '';
-  if(a.cursos) extra += `<h4>Resultados de formación (cifras de referencia)</h4>${cursosTable(a.cursos)}`;
+  if(a.cursos) extra += `<h4>Resultados de formación${canEdit?'':' (cifras de referencia)'}</h4>${cursosTable(a.id, a.cursos)}`;
   if(a.estructura) extra += `<h4>Estructura organizacional deseada — headcount (referencia)</h4>${estructuraTable(a.estructura)}`;
   if(a.focusgroup) extra += `<h4>Diagnóstico cultural — participación en focus groups y entrevistas (referencia)</h4>${focusGroupBlock(a.focusgroup)}`;
+  if(a.vacantesLiderazgo) extra += `<h4>Posiciones de liderazgo vacantes (${esc(a.vacantesLiderazgoFecha||'referencia')})</h4>${vacantesLiderazgoBlock(a.vacantesLiderazgo)}`;
 
   document.getElementById('modal').innerHTML = `
     <div class="modal-head">
