@@ -73,6 +73,8 @@ img{max-width:100%;}
 .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:10px;}
 @media (max-width:820px){.tier-grid{grid-template-columns:1fr;}}
 .tier-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;position:relative;}
+.tier-card.clickable{cursor:pointer;transition:transform .18s, box-shadow .18s;}
+.tier-card.clickable:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--blue);}
 .tier-card.result{background:var(--green-bg);border-color:#bfe4cd;}
 .tier-label{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);}
 .tier-card.result .tier-label{color:var(--green);}
@@ -84,6 +86,13 @@ img{max-width:100%;}
 .methodology{font-size:11.5px;color:var(--text-soft);font-weight:600;margin:18px 0 30px;line-height:1.6;border-left:3px solid var(--line);padding-left:12px;}
 
 /* TABLA ROADMAP */
+.avance-box{
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin-bottom:18px;
+  display:flex; align-items:center; gap:18px;
+}
+.avance-val{font-size:32px;font-weight:800;color:var(--navy);line-height:1;}
+.avance-lbl{font-size:12.5px;font-weight:700;color:var(--text-mid);line-height:1.5;}
+.avance-lbl span{font-size:11px;color:var(--text-soft);font-weight:600;}
 .filters-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
 .filter-select{border:1px solid var(--line);border-radius:100px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--text-mid);background:#fff;cursor:pointer;}
 .roadmap-count{font-size:12px;color:var(--text-soft);font-weight:700;margin-bottom:12px;}
@@ -99,9 +108,6 @@ table.rm-table tr:hover td{background:#fbfcfe;}
 .badge.pendiente{background:var(--red-bg);color:var(--red);}
 .indicador-cell{color:var(--text-mid);font-weight:500;font-size:12px;}
 .table-scroll{overflow-x:auto;}
-@media (max-width:700px){
-  table.rm-table th:nth-child(2), table.rm-table td:nth-child(2){display:none;}
-}
 
 /* META: doc salarial */
 .exec-banner{background:var(--green-bg);border:1px solid #bfe4cd;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:10px;margin-bottom:24px;font-weight:800;color:var(--green);font-size:13px;}
@@ -284,17 +290,17 @@ function renderResumen(){
     </div>
 
     <div class="tier-grid">
-      <div class="tier-card">
+      <div class="tier-card clickable" onclick="switchTab('minimo')">
         <div class="tier-label">Mínimo</div>
         <div class="tier-val">75%</div>
         <div class="tier-desc">Ejecución del plan de integración cultural.</div>
       </div>
-      <div class="tier-card">
+      <div class="tier-card clickable" onclick="switchTab('meta')">
         <div class="tier-label">Meta</div>
         <div class="tier-val">100%</div>
         <div class="tier-desc">Definición e implementación de políticas (salarial, beneficios y horarios de funcionamiento).</div>
       </div>
-      <div class="tier-card">
+      <div class="tier-card clickable" onclick="switchTab('superior')">
         <div class="tier-label">Superior</div>
         <div class="tier-val">125%</div>
         <div class="tier-desc">Estructura organizacional FTD Argentina: cómo vamos a operar por área con roles bien definidos.</div>
@@ -312,12 +318,18 @@ function renderMinimo(){
 
   const counts = {completado:0,progreso:0,pendiente:0};
   DATA.roadmap.forEach(r=>counts[r.estatus]++);
+  const avanceCount = DATA.roadmap.filter(r=>r.avance!==null && r.avance!==undefined).length;
+  const minimoAvg = computeMinimoAvg();
 
   return `
     <div class="section-head">
       <div class="eyebrow">Mínimo · 75%</div>
       <h2>Ejecución del plan de integración cultural</h2>
       <p>Resumen ejecutivo del roadmap por gerencia: ${DATA.roadmap.length} iniciativas · ${counts.completado} completadas · ${counts.progreso} en progreso · ${counts.pendiente} pendientes</p>
+    </div>
+    <div class="avance-box">
+      <div class="avance-val">${minimoAvg}%</div>
+      <div class="avance-lbl">Avance promedio<br><span>según columna "Avance" · ${avanceCount} de ${DATA.roadmap.length} iniciativas con dato registrado</span></div>
     </div>
     <div class="filters-row">
       <select class="filter-select" id="fArea" onchange="setFilterArea(this.value)">
@@ -334,12 +346,11 @@ function renderMinimo(){
     <div class="roadmap-count">Mostrando ${rows.length} de ${DATA.roadmap.length} iniciativas</div>
     <div class="table-scroll">
     <table class="rm-table">
-      <thead><tr><th>Área</th><th>Dimensión</th><th>Iniciativa</th><th>Estatus</th></tr></thead>
+      <thead><tr><th>Área</th><th>Iniciativa</th><th>Estatus</th></tr></thead>
       <tbody>
         ${rows.map(r=>`
           <tr>
             <td><span class="area-pill">${esc(r.area)}</span></td>
-            <td class="indicador-cell">${esc(r.dimension)}</td>
             <td><b>${esc(r.iniciativa)}</b></td>
             <td><span class="badge ${r.estatus}">${STATE_LABEL[r.estatus]}</span></td>
           </tr>
