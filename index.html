@@ -86,6 +86,18 @@ img{max-width:100%;}
 .methodology{font-size:11.5px;color:var(--text-soft);font-weight:600;margin:18px 0 30px;line-height:1.6;border-left:3px solid var(--line);padding-left:12px;}
 
 /* TABLA ROADMAP */
+.ficha-area{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;}
+.ficha-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 18px;background:#f7f9fc;border-bottom:1px solid var(--line);}
+.ficha-area-nombre{font-size:14px;font-weight:800;color:var(--navy);}
+.ficha-counts{display:flex;gap:6px;}
+.ficha-counts .pill{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:100px;}
+.ficha-counts .pill.completado{background:var(--green-bg);color:var(--green);}
+.ficha-counts .pill.progreso{background:var(--amber-bg);color:var(--amber);}
+.ficha-counts .pill.pendiente{background:var(--red-bg);color:var(--red);}
+.ficha-body{padding:6px 18px;}
+.ficha-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);}
+.ficha-item:last-child{border-bottom:none;}
+.ficha-item-nombre{font-size:13px;font-weight:700;color:var(--text);}
 .avance-box{
   background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin-bottom:18px;
   display:flex; align-items:center; gap:18px;
@@ -213,16 +225,22 @@ function normalizeAvance(raw){
   return isNaN(n) ? null : (n<=1 ? Math.round(n*100) : Math.round(n));
 }
 
+function isExcludedArea(area){
+  const t = String(area||'').toLowerCase();
+  return t.indexOf('líderes argentina') >= 0 || t.indexOf('lideres argentina') >= 0;
+}
 async function loadRoadmapLive(){
-  if(!apiConfigured()) { liveMode = false; renderMain(); updateLastUpdatedLabel(); return; }
+  if(!apiConfigured()) { liveMode = false; DATA.roadmap = DATA.roadmap.filter(r=>!isExcludedArea(r.area)); renderMain(); updateLastUpdatedLabel(); return; }
   try{
     const res = await fetch(API_ROADMAP_URL, { method:'GET' });
     const json = await res.json();
     if(!json.ok) throw new Error(json.error||'Error al leer la hoja');
-    DATA.roadmap = json.data.map(r=>({
-      area: r.area, dimension: r.dimension, iniciativa: r.iniciativa,
-      indicador: r.indicador, estatus: normalizeEstatus(r.estatus), avance: normalizeAvance(r.avance),
-    }));
+    DATA.roadmap = json.data
+      .filter(r=>!isExcludedArea(r.area))
+      .map(r=>({
+        area: r.area, dimension: r.dimension, iniciativa: r.iniciativa,
+        indicador: r.indicador, estatus: normalizeEstatus(r.estatus), avance: normalizeAvance(r.avance),
+      }));
     liveMode = true;
   }catch(err){
     console.error('No se pudo conectar con la hoja Roadmap por Gerencia:', err);
@@ -314,15 +332,48 @@ function renderResumen(){
 
 /* ================= MÍNIMO: roadmap ================= */
 function renderMinimo(){
-  const areas = [...new Set(DATA.roadmap.map(r=>r.area).filter(Boolean))].sort();
   let rows = DATA.roadmap;
-  if(filterArea) rows = rows.filter(r=>r.area===filterArea);
   if(filterEstatus) rows = rows.filter(r=>r.estatus===filterEstatus);
 
   const counts = {completado:0,progreso:0,pendiente:0};
   DATA.roadmap.forEach(r=>counts[r.estatus]++);
   const avanceCount = DATA.roadmap.filter(r=>r.avance!==null && r.avance!==undefined).length;
   const minimoAvg = computeMinimoAvg();
+
+  // Agrupar por área, respetando el orden de aparición
+  const grouped = {};
+  const order = [];
+  rows.forEach(r=>{
+    const key = r.area || 'Sin área asignada';
+    if(!grouped[key]){ grouped[key] = []; order.push(key); }
+    grouped[key].push(r);
+  });
+
+  const fichasHtml = order.map(area=>{
+    const items = grouped[area];
+    const c = {completado:0,progreso:0,pendiente:0};
+    items.forEach(r=>c[r.estatus]++);
+    return `
+      <div class="ficha-area">
+        <div class="ficha-header">
+          <span class="ficha-area-nombre">${esc(area)}</span>
+          <span class="ficha-counts">
+            ${c.completado?`<span class="pill completado">${c.completado} ✓</span>`:''}
+            ${c.progreso?`<span class="pill progreso">${c.progreso} ⏳</span>`:''}
+            ${c.pendiente?`<span class="pill pendiente">${c.pendiente} •</span>`:''}
+          </span>
+        </div>
+        <div class="ficha-body">
+          ${items.map(r=>`
+            <div class="ficha-item">
+              <span class="ficha-item-nombre">${esc(r.iniciativa)}</span>
+              <span class="badge ${r.estatus}">${STATE_LABEL[r.estatus]}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="section-head">
@@ -335,35 +386,17 @@ function renderMinimo(){
       <div class="avance-lbl">Avance promedio<br><span>promedio de las ${avanceCount} de ${DATA.roadmap.length} iniciativas que ya tienen % registrado en la columna "Avance" — subirá o bajará a medida que se completen las demás</span></div>
     </div>
     <div class="filters-row">
-      <select class="filter-select" id="fArea" onchange="setFilterArea(this.value)">
-        <option value="">Todas las áreas (${DATA.roadmap.length})</option>
-        ${areas.map(a=>`<option value="${esc(a)}" ${filterArea===a?'selected':''}>${esc(a)} (${DATA.roadmap.filter(r=>r.area===a).length})</option>`).join('')}
-      </select>
       <select class="filter-select" id="fEstatus" onchange="setFilterEstatus(this.value)">
-        <option value="">Todos los estatus</option>
+        <option value="">Todos los estatus (${DATA.roadmap.length})</option>
         <option value="completado" ${filterEstatus==='completado'?'selected':''}>Completado (${counts.completado})</option>
         <option value="progreso" ${filterEstatus==='progreso'?'selected':''}>En progreso (${counts.progreso})</option>
         <option value="pendiente" ${filterEstatus==='pendiente'?'selected':''}>Pendiente (${counts.pendiente})</option>
       </select>
     </div>
-    <div class="roadmap-count">Mostrando ${rows.length} de ${DATA.roadmap.length} iniciativas</div>
-    <div class="table-scroll">
-    <table class="rm-table">
-      <thead><tr><th>Área</th><th>Iniciativa</th><th>Estatus</th></tr></thead>
-      <tbody>
-        ${rows.map(r=>`
-          <tr>
-            <td><span class="area-pill">${esc(r.area)}</span></td>
-            <td><b>${esc(r.iniciativa)}</b></td>
-            <td><span class="badge ${r.estatus}">${STATE_LABEL[r.estatus]}</span></td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-    </div>
+    <div class="roadmap-count">Mostrando ${rows.length} de ${DATA.roadmap.length} iniciativas, en ${order.length} áreas</div>
+    ${fichasHtml}
   `;
 }
-function setFilterArea(v){ filterArea = v; renderMain(); }
 function setFilterEstatus(v){ filterEstatus = v; renderMain(); }
 
 /* ================= META: doc salarial ================= */
@@ -470,6 +503,7 @@ function renderMain(){
   else if(currentTab==='superior') el.innerHTML = renderSuperior();
 }
 
+DATA.roadmap = DATA.roadmap.filter(r=>!isExcludedArea(r.area));
 renderTabsBar();
 renderMain();
 loadRoadmapLive();
