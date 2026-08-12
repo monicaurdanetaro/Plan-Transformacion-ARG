@@ -245,14 +245,10 @@ function esc(s){
 const STATE_LABEL = {completado:'Completado', progreso:'En progreso', pendiente:'Pendiente'};
 
 function computeMinimoAvg(){
-  // Si una iniciativa tiene % en la columna "Avance", se usa ese valor.
-  // Si no lo tiene, se infiere de su Estatus: Completado=100%, En progreso=50%, Pendiente=0%.
-  const vals = DATA.roadmap.map(r=>{
-    if(r.avance!==null && r.avance!==undefined) return r.avance;
-    if(r.estatus==='completado') return 100;
-    if(r.estatus==='progreso') return 50;
-    return 0;
-  });
+  // Solo promedia las iniciativas que YA tienen un % registrado en la columna "Avance".
+  // Las que aún no tienen dato no se cuentan (ni suman ni restan), así que el promedio
+  // sube o baja a medida que se van completando esos datos en la hoja.
+  const vals = DATA.roadmap.map(r=>r.avance).filter(v=>v!==null && v!==undefined);
   if(!vals.length) return 0;
   return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
 }
@@ -336,7 +332,7 @@ function renderMinimo(){
     </div>
     <div class="avance-box">
       <div class="avance-val">${minimoAvg}%</div>
-      <div class="avance-lbl">Avance promedio<br><span>${avanceCount} iniciativas con % en la columna "Avance"; las otras ${DATA.roadmap.length-avanceCount} se calculan según su Estatus (Completado=100% · En progreso=50% · Pendiente=0%)</span></div>
+      <div class="avance-lbl">Avance promedio<br><span>promedio de las ${avanceCount} de ${DATA.roadmap.length} iniciativas que ya tienen % registrado en la columna "Avance" — subirá o bajará a medida que se completen las demás</span></div>
     </div>
     <div class="filters-row">
       <select class="filter-select" id="fArea" onchange="setFilterArea(this.value)">
