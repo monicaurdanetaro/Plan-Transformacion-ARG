@@ -390,12 +390,6 @@ function renderMinimo(){
         <div class="ficha-top">
           <div class="ficha-eyebrow" style="color:${color}">Área responsable</div>
           <div class="ficha-titulo">${esc(area)}</div>
-          <div class="ficha-tags">
-            <span class="ficha-tag">${items.length} iniciativa${items.length===1?'':'s'}</span>
-            ${c.completado?`<span class="ficha-tag good">${c.completado} completada${c.completado===1?'':'s'}</span>`:''}
-            ${c.progreso?`<span class="ficha-tag warn">${c.progreso} en progreso</span>`:''}
-            ${c.pendiente?`<span class="ficha-tag bad">${c.pendiente} pendiente${c.pendiente===1?'':'s'}</span>`:''}
-          </div>
         </div>
         <div class="ficha-list-label">Iniciativas</div>
         <div class="ficha-body">
