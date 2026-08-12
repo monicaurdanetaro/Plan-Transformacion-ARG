@@ -314,7 +314,7 @@ function renderResumen(){
 
 /* ================= MÍNIMO: roadmap ================= */
 function renderMinimo(){
-  const areas = [...new Set(DATA.roadmap.map(r=>r.area))].sort();
+  const areas = [...new Set(DATA.roadmap.map(r=>r.area).filter(Boolean))].sort();
   let rows = DATA.roadmap;
   if(filterArea) rows = rows.filter(r=>r.area===filterArea);
   if(filterEstatus) rows = rows.filter(r=>r.estatus===filterEstatus);
