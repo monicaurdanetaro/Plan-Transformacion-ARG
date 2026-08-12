@@ -86,18 +86,31 @@ img{max-width:100%;}
 .methodology{font-size:11.5px;color:var(--text-soft);font-weight:600;margin:18px 0 30px;line-height:1.6;border-left:3px solid var(--line);padding-left:12px;}
 
 /* TABLA ROADMAP */
-.ficha-area{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;}
-.ficha-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 18px;background:#f7f9fc;border-bottom:1px solid var(--line);}
-.ficha-area-nombre{font-size:14px;font-weight:800;color:var(--navy);}
-.ficha-counts{display:flex;gap:6px;}
-.ficha-counts .pill{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:100px;}
-.ficha-counts .pill.completado{background:var(--green-bg);color:var(--green);}
-.ficha-counts .pill.progreso{background:var(--amber-bg);color:var(--amber);}
-.ficha-counts .pill.pendiente{background:var(--red-bg);color:var(--red);}
-.ficha-body{padding:6px 18px;}
-.ficha-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);}
+.ficha-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media (max-width:1100px){.ficha-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:700px){.ficha-grid{grid-template-columns:1fr;}}
+.ficha-area{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;
+  border-top:4px solid var(--ficha-color, var(--blue));display:flex;flex-direction:column;
+}
+.ficha-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.ficha-titulo{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:12px;line-height:1.3;}
+.ficha-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.ficha-tag{font-size:10.5px;font-weight:700;color:var(--text-mid);background:#f0f2f6;border-radius:100px;padding:4px 10px;}
+.ficha-tag.good{background:var(--green-bg);color:var(--green);}
+.ficha-tag.warn{background:var(--amber-bg);color:var(--amber);}
+.ficha-tag.bad{background:var(--red-bg);color:var(--red);}
+.ficha-progress-box{background:#f7f9fc;border-radius:10px;padding:12px 14px;margin-bottom:16px;}
+.ficha-progress-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.ficha-progress-label{font-size:10px;font-weight:800;letter-spacing:.04em;}
+.ficha-progress-frac{font-size:14px;font-weight:800;}
+.ficha-list-label{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft);margin-bottom:8px;}
+.ficha-body{flex:1;}
+.ficha-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
 .ficha-item:last-child{border-bottom:none;}
-.ficha-item-nombre{font-size:13px;font-weight:700;color:var(--text);}
+.ficha-item-nombre{font-size:12.5px;font-weight:700;color:var(--text);line-height:1.4;}
+.prog-track{background:#e9edf3;border-radius:100px;height:8px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:100px;transition:width .3s;}
 .avance-box{
   background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin-bottom:18px;
   display:flex; align-items:center; gap:18px;
@@ -229,13 +242,24 @@ function isExcludedArea(area){
   const t = String(area||'').toLowerCase();
   return t.indexOf('líderes argentina') >= 0 || t.indexOf('lideres argentina') >= 0;
 }
+function fillMergedAreas(rows){
+  // Red de seguridad: si el Apps Script (por versión vieja) devuelve el área
+  // vacía en filas que en el Sheet están combinadas verticalmente, la
+  // reconstruimos aquí usando la última área no vacía vista en orden.
+  let last = '';
+  return rows.map(r=>{
+    const a = String(r.area||'').trim();
+    if(a){ last = a; return r; }
+    return Object.assign({}, r, { area: last });
+  });
+}
 async function loadRoadmapLive(){
   if(!apiConfigured()) { liveMode = false; DATA.roadmap = DATA.roadmap.filter(r=>!isExcludedArea(r.area)); renderMain(); updateLastUpdatedLabel(); return; }
   try{
     const res = await fetch(API_ROADMAP_URL, { method:'GET' });
     const json = await res.json();
     if(!json.ok) throw new Error(json.error||'Error al leer la hoja');
-    DATA.roadmap = json.data
+    DATA.roadmap = fillMergedAreas(json.data)
       .filter(r=>!isExcludedArea(r.area))
       .map(r=>({
         area: r.area, dimension: r.dimension, iniciativa: r.iniciativa,
@@ -261,6 +285,12 @@ function esc(s){
 }
 
 const STATE_LABEL = {completado:'Completado', progreso:'En progreso', pendiente:'Pendiente'};
+
+function weightedPctSimple(items){
+  if(!items.length) return 0;
+  const score = items.reduce((s,i)=> s + (i.estatus==='completado'?1: i.estatus==='progreso'?0.5:0), 0);
+  return Math.round(score/items.length*100);
+}
 
 function computeMinimoAvg(){
   // Solo promedia las iniciativas que YA tienen un % registrado en la columna "Avance".
@@ -349,20 +379,34 @@ function renderMinimo(){
     grouped[key].push(r);
   });
 
-  const fichasHtml = order.map(area=>{
+  const FICHA_COLORS = ['#0084d0','#1f9254','#c9860a','#4a106e','#00a19a','#E50571','#418FDE','#a1ac00','#c23b3b'];
+  const fichasHtml = order.map((area,idx)=>{
     const items = grouped[area];
     const c = {completado:0,progreso:0,pendiente:0};
     items.forEach(r=>c[r.estatus]++);
+    const pct = weightedPctSimple(items);
+    const color = FICHA_COLORS[idx % FICHA_COLORS.length];
+    const pctColor = pct>=75 ? 'var(--green)' : pct>=40 ? 'var(--amber)' : 'var(--red)';
     return `
-      <div class="ficha-area">
-        <div class="ficha-header">
-          <span class="ficha-area-nombre">${esc(area)}</span>
-          <span class="ficha-counts">
-            ${c.completado?`<span class="pill completado">${c.completado} ✓</span>`:''}
-            ${c.progreso?`<span class="pill progreso">${c.progreso} ⏳</span>`:''}
-            ${c.pendiente?`<span class="pill pendiente">${c.pendiente} •</span>`:''}
-          </span>
+      <div class="ficha-area" style="--ficha-color:${color}">
+        <div class="ficha-top">
+          <div class="ficha-eyebrow" style="color:${color}">Área responsable</div>
+          <div class="ficha-titulo">${esc(area)}</div>
+          <div class="ficha-tags">
+            <span class="ficha-tag">${items.length} iniciativa${items.length===1?'':'s'}</span>
+            ${c.completado?`<span class="ficha-tag good">${c.completado} completada${c.completado===1?'':'s'}</span>`:''}
+            ${c.progreso?`<span class="ficha-tag warn">${c.progreso} en progreso</span>`:''}
+            ${c.pendiente?`<span class="ficha-tag bad">${c.pendiente} pendiente${c.pendiente===1?'':'s'}</span>`:''}
+          </div>
         </div>
+        <div class="ficha-progress-box">
+          <div class="ficha-progress-head">
+            <span class="ficha-progress-label" style="color:${pctColor}">AVANCE DEL ÁREA</span>
+            <span class="ficha-progress-frac" style="color:${pctColor}">${pct}%</span>
+          </div>
+          <div class="prog-track"><div class="prog-fill" style="width:${pct}%;background:${pctColor}"></div></div>
+        </div>
+        <div class="ficha-list-label">Iniciativas</div>
         <div class="ficha-body">
           ${items.map(r=>`
             <div class="ficha-item">
@@ -394,7 +438,7 @@ function renderMinimo(){
       </select>
     </div>
     <div class="roadmap-count">Mostrando ${rows.length} de ${DATA.roadmap.length} iniciativas, en ${order.length} áreas</div>
-    ${fichasHtml}
+    <div class="ficha-grid">${fichasHtml}</div>
   `;
 }
 function setFilterEstatus(v){ filterEstatus = v; renderMain(); }
