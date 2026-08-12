@@ -384,9 +384,7 @@ function renderMinimo(){
     const items = grouped[area];
     const c = {completado:0,progreso:0,pendiente:0};
     items.forEach(r=>c[r.estatus]++);
-    const pct = weightedPctSimple(items);
     const color = FICHA_COLORS[idx % FICHA_COLORS.length];
-    const pctColor = pct>=75 ? 'var(--green)' : pct>=40 ? 'var(--amber)' : 'var(--red)';
     return `
       <div class="ficha-area" style="--ficha-color:${color}">
         <div class="ficha-top">
@@ -398,10 +396,6 @@ function renderMinimo(){
             ${c.progreso?`<span class="ficha-tag warn">${c.progreso} en progreso</span>`:''}
             ${c.pendiente?`<span class="ficha-tag bad">${c.pendiente} pendiente${c.pendiente===1?'':'s'}</span>`:''}
           </div>
-        </div>
-        <div class="ficha-progress-box">
-          <span class="ficha-progress-label" style="color:${pctColor}">AVANCE DEL ÁREA</span>
-          <span class="ficha-progress-frac" style="color:${pctColor}">${pct}%</span>
         </div>
         <div class="ficha-list-label">Iniciativas</div>
         <div class="ficha-body">
